@@ -96,6 +96,18 @@
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const intervalMs = prefersReduced ? 2800 : 1600;
 
+    // FEHLTE ZUVOR: Schritt-Funktion für die Demo-Animation
+    const step = () => {
+      const el = items.length ? items[i % items.length] : null;
+      items.forEach(s => s.classList.remove('hover'));
+      if (el) {
+        el.classList.add('hover');
+        posUnder(el);
+        moveCursor(el);
+      }
+      i++;
+    };
+
     const startDemo = () => {
       step();
       demo.dataset.running = 'true';
@@ -104,7 +116,11 @@
     };
 
     // etwas Luft lassen, bis Layout/Schriften stabil sind
-    window.setTimeout(startDemo, 300);
+    window.setTimeout(() => {
+      // einmal initial positionieren, dann Intervall starten
+      step();
+      startDemo();
+    }, 300);
 
     // optional: pausieren beim Hover, fortsetzen beim Verlassen
     demo.addEventListener('mouseenter', () => {
@@ -112,6 +128,16 @@
     });
     demo.addEventListener('mouseleave', () => {
       if (!demo._timer) demo._timer = setInterval(step, intervalMs);
+    });
+
+    // bei Resize neu justieren
+    window.addEventListener('resize', () => {
+      const currentEl = items.length ? items[(i - 1 + items.length) % items.length] : null;
+      if (currentEl) {
+        posUnder(currentEl);
+        moveCursor(currentEl);
+      }
+    });
     });
   }
 })();
