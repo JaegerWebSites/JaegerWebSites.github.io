@@ -94,22 +94,24 @@
 
     let i = 0;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const step = () => {
-      const el = items[i % items.length];
-      items.forEach(s => s.classList.remove('hover'));
-      if (el) {
-        el.classList.add('hover');
-        posUnder(el);
-        moveCursor(el);
-      }
-      i++;
+    const intervalMs = prefersReduced ? 2800 : 1600;
+
+    const startDemo = () => {
+      step();
+      demo.dataset.running = 'true';
+      if (demo._timer) clearInterval(demo._timer);
+      demo._timer = setInterval(step, intervalMs);
     };
 
-    if (!prefersReduced) {
-      step();
-      setInterval(step, 1600);
-    } else {
-      step();
-    }
+    // etwas Luft lassen, bis Layout/Schriften stabil sind
+    window.setTimeout(startDemo, 300);
+
+    // optional: pausieren beim Hover, fortsetzen beim Verlassen
+    demo.addEventListener('mouseenter', () => {
+      if (demo._timer) { clearInterval(demo._timer); demo._timer = null; }
+    });
+    demo.addEventListener('mouseleave', () => {
+      if (!demo._timer) demo._timer = setInterval(step, intervalMs);
+    });
   }
 })();
