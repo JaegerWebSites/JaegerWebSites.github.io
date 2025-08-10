@@ -222,7 +222,8 @@ main { min-height: 100svh; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cursor, .demo-underline { transition: none; }
+  /* Für die Demo weiterhin sanfte Animationen, aber etwas langsamer */
+  .cursor, .demo-underline { transition-duration: .8s; }
 }
 
 /* ===== Footer ===== */
