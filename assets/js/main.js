@@ -138,6 +138,5 @@
         moveCursor(currentEl);
       }
     });
-    });
   }
 })();
