@@ -63,4 +63,53 @@
       window.requestAnimationFrame(() => positionUnderline(activeLink));
     });
   }
+
+  // ===== Demo-"Video" auf der Learn-More-Seite =====
+  const demo = document.querySelector('[data-demo]');
+  if (demo) {
+    const canvas = demo.querySelector('.demo-canvas');
+    const dnav = demo.querySelector('.demo-nav');
+    const dlist = dnav ? dnav.querySelector('ul') : null;
+    const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
+    const dUnderline = dnav ? dnav.querySelector('.demo-underline') : null;
+    const cursor = demo.querySelector('.cursor');
+
+    const posUnder = (el) => {
+      if (!dUnderline || !dlist || !el) return;
+      const r = el.getBoundingClientRect();
+      const pr = dlist.getBoundingClientRect();
+      dUnderline.style.width = `${r.width}px`;
+      dUnderline.style.transform = `translateX(${r.left - pr.left}px)`;
+    };
+
+    const moveCursor = (el) => {
+      if (!cursor || !canvas || !el) return;
+      const r = el.getBoundingClientRect();
+      const pr = canvas.getBoundingClientRect();
+      const x = r.left - pr.left + r.width / 2;
+      const y = r.top - pr.top + r.height / 1.2;
+      cursor.style.opacity = '1';
+      cursor.style.transform = `translate(${x}px, ${y}px) rotate(-15deg)`;
+    };
+
+    let i = 0;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const step = () => {
+      const el = items[i % items.length];
+      items.forEach(s => s.classList.remove('hover'));
+      if (el) {
+        el.classList.add('hover');
+        posUnder(el);
+        moveCursor(el);
+      }
+      i++;
+    };
+
+    if (!prefersReduced) {
+      step();
+      setInterval(step, 1600);
+    } else {
+      step();
+    }
+  }
 })();
