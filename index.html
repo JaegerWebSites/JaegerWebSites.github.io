@@ -1,7 +1,57 @@
 <!doctype html>
 <html lang="de">
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Hallo GitHub Pages</title>
-<h1>Es läuft! 🚀</h1>
-<p>Diese Seite wird über GitHub Pages gehostet.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jäger WebSites — Websites, die wirken</title>
+    <meta name="description" content="Jäger WebSites: modernes Webdesign, minimalistisch, schnell, präzise." />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script defer src="assets/js/main.js"></script>
+  </head>
+  <body class="theme-dark">
+    <!-- Fixierte Navigationsleiste -->
+    <header class="site-header" data-header>
+      <div class="nav-inner">
+        <a class="brand" href="index.html" aria-label="Startseite">Jäger <span>WebSites</span></a>
+
+        <button class="nav-toggle" aria-expanded="false" aria-label="Menü öffnen" data-toggle>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <nav class="nav" data-nav>
+          <ul>
+            <li><a href="index.html" data-nav-link>Home</a></li>
+            <li><a href="about.html" data-nav-link>About</a></li>
+            <li><a href="learn-more.html" data-nav-link>Learn&nbsp;More</a></li>
+          </ul>
+          <div class="nav-underline" aria-hidden="true"></div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO mit generativem, codebasiertem Hintergrund (kein externes Bild nötig) -->
+      <section class="hero" id="hero">
+        <div class="hero-content">
+          <h1 class="hero-title">Jäger <span>WebSites</span></h1>
+          <p class="hero-subtitle">Minimal. Schnell. Präzise.</p>
+          <div class="cta-row">
+            <a class="btn" href="learn-more.html">Mehr erfahren</a>
+            <a class="btn ghost" href="about.html">Über uns</a>
+          </div>
+        </div>
+
+        <!-- dekorative Elemente -->
+        <div class="glow glow-a" aria-hidden="true"></div>
+        <div class="glow glow-b" aria-hidden="true"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <small>© <span id="year"></span> Jäger WebSites</small>
+    </footer>
+  </body>
+</html>
