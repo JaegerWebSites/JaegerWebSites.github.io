@@ -2,9 +2,12 @@
   Navigation: aktiver Link + animierter Underline-Indicator
   Mobile-Menü: Toggle
   Kleinigkeiten: dynamisches Jahr
+  + Learn-More Demo: Cursor & Underline simulieren ein Hover-Video
 */
 
-(function() {
+// Vereinfachung: statt IIFE verwenden wir DOMContentLoaded – vermeidet Klammer-Konflikte
+// und stellt sicher, dass das DOM existiert.
+document.addEventListener('DOMContentLoaded', () => {
   const header = document.querySelector('[data-header]');
   const nav = document.querySelector('[data-nav]');
   const list = nav ? nav.querySelector('ul') : null;
@@ -42,7 +45,7 @@
   };
 
   // initiale Position
-  window.requestAnimationFrame(() => positionUnderline(activeLink));
+  requestAnimationFrame(() => positionUnderline(activeLink));
 
   // Hover-/Focus-Bewegung
   links.forEach(link => {
@@ -59,8 +62,7 @@
     toggle.addEventListener('click', () => {
       const open = header.classList.toggle('open');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      // nach dem Öffnen neu positionieren
-      window.requestAnimationFrame(() => positionUnderline(activeLink));
+      requestAnimationFrame(() => positionUnderline(activeLink));
     });
   }
 
@@ -93,10 +95,9 @@
     };
 
     let i = 0;
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const intervalMs = prefersReduced ? 2800 : 1600;
 
-    // FEHLTE ZUVOR: Schritt-Funktion für die Demo-Animation
     const step = () => {
       const el = items.length ? items[i % items.length] : null;
       items.forEach(s => s.classList.remove('hover'));
@@ -116,8 +117,7 @@
     };
 
     // etwas Luft lassen, bis Layout/Schriften stabil sind
-    window.setTimeout(() => {
-      // einmal initial positionieren, dann Intervall starten
+    setTimeout(() => {
       step();
       startDemo();
     }, 300);
@@ -139,4 +139,4 @@
       }
     });
   }
-})();
+});
