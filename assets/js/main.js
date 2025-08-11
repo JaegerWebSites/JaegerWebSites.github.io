@@ -3,6 +3,7 @@
   Mobile-Menü: Toggle
   Kleinigkeiten: dynamisches Jahr
   + Learn-More: 3D-Carousel mit drei Demo-„Videos“ (Simulation)
+  + About: Kontaktformular-Validierung & Anker-Scroll
 */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -158,13 +159,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const pausePanels = () => { panelDemos.forEach(d => d.stop()); };
   const resumePanels = () => { panelDemos.forEach(d => d.start()); };
 
-  const ROTATE_INTERVAL_MS = 3200; // etwas langsamer als 2.5s
+  const ROTATE_INTERVAL_MS = 3800; // langsamer
   const PANEL_TRANS_MS = 800;
 
-  const beginRotation = () => { if (rotating) return; rotating = true; carousel.classList.add('is-rotating'); pausePanels(); };
-  const endRotation   = () => { rotating = false; carousel.classList.remove('is-rotating'); requestAnimationFrame(() => requestAnimationFrame(resumePanels)); };
+  const beginRotation = () => { if (rotating) return; rotating = true; if (carousel) carousel.classList.add('is-rotating'); pausePanels(); };
+  const endRotation   = () => { rotating = false; if (carousel) carousel.classList.remove('is-rotating'); requestAnimationFrame(() => requestAnimationFrame(resumePanels)); };
 
-  const rotateOnce = () => { beginRotation(); idx = (idx + 1) % panelEls.length; applyPositions(); setTimeout(endRotation, PANEL_TRANS_MS + 120); };
+  const rotateOnce = () => { if (!panelEls.length) return; beginRotation(); idx = (idx + 1) % panelEls.length; applyPositions(); setTimeout(endRotation, PANEL_TRANS_MS + 120); };
   const startRotation = () => { if (rotTimer) clearInterval(rotTimer); rotTimer = setInterval(rotateOnce, ROTATE_INTERVAL_MS); };
   const stopRotation  = () => { if (rotTimer) { clearInterval(rotTimer); rotTimer = null; } };
 
@@ -199,8 +200,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const planEls = Array.from(document.querySelectorAll('.plan'));
   const planDemos = planEls.map((el, i) => attachDemo(el, i === 1 ? 1400 : 1600)).filter(Boolean);
 
-  // bei Resize alle Indikatoren sauber neu setzen
-  addEventListener('resize', () => {
-    [...panelDemos, ...planDemos].forEach(d => d.step());
-  });
-});
+  // ===== About: wenn mit Hash geladen → zum Formular scrollen, dann Fokus setzen
+  const contactSection = document.getElementById('contact-form');
+  if (getFile(window.location.pathname) === 'about.html' && window.location.hash === '#contact-form' && contactSection) {
+    setTimeout(() => {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const first = contactSection.querySelector('#firstName');
+      if (first) first.focus({ preventScroll: true });
+    }, 60);
+  }
+
+  // ===== About: Formular-Validierung & Mailto-Fallback =====
+  const form = docu
