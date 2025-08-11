@@ -298,14 +298,14 @@ main { min-height: 100svh; }
 }
 
 /* ===== About Hero & Kontaktformular ===== */
-.about-hero { min-height: 100svh; display: grid; align-items: end; background:
+.about-hero { padding-top: 96px; background:
   radial-gradient(50% 25% at 20% 15%, rgba(99,102,241,.18), transparent 60%),
   radial-gradient(50% 25% at 80% 10%, rgba(16,185,129,.18), transparent 65%),
   linear-gradient(180deg, #0b0f14 0%, #0a0d12 100%);
 }
 
 .contact-section { padding-top: 24px; }
-.form-card { border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); box-shadow: 0 16px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03); }
+.form-card { border: 2px solid rgba(255,255,255,.35); border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03)); backdrop-filter: blur(6px) saturate(120%); -webkit-backdrop-filter: blur(6px) saturate(120%); box-shadow: 0 24px 64px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06) inset; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 18px; }
 .form-field { display: grid; gap: 6px; }
 .form-field label { font-weight: 700; font-size: .95rem; }
