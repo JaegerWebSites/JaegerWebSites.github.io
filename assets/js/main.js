@@ -105,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         hl.style.height = `${el.offsetHeight}px`;
       };
       const step = () => {
-        // open/close simulieren + Highlight bewegen
         if (panel) panel.classList.add('open');
         const el = items.length ? items[j % items.length] : null;
         items.forEach(s => s.classList.remove('hover'));
@@ -145,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Demos an Carousel-Panels anhängen
   const panelDemos = panelEls.map((p, i) => attachDemo(p, i === 0 ? 1500 : i === 1 ? 1300 : 1700)).filter(Boolean);
 
-  // Carousel-Rotation (ohne den Interval zu stoppen)
+  // Carousel-Rotation
   let idx = 0; let rotating = false; let rotTimer = null;
   const applyPositions = () => {
     panelEls.forEach(p => p.classList.remove('is-front','is-left','is-right'));
@@ -159,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pausePanels = () => { panelDemos.forEach(d => d.stop()); };
   const resumePanels = () => { panelDemos.forEach(d => d.start()); };
 
-  const ROTATE_INTERVAL_MS = 2500; // 2.5s
+  const ROTATE_INTERVAL_MS = 3200; // etwas langsamer als 2.5s
   const PANEL_TRANS_MS = 800;
 
   const beginRotation = () => { if (rotating) return; rotating = true; carousel.classList.add('is-rotating'); pausePanels(); };
@@ -173,6 +172,23 @@ document.addEventListener('DOMContentLoaded', () => {
     applyPositions();
     panelDemos.forEach(d => d.start());
     startRotation();
+
+    // Klick auf Panel-Fenster oder Caption → zum jeweiligen Plan scrollen
+    const map = { a: '#plan-a', b: '#plan-b', c: '#plan-c' };
+    panelEls.forEach(p => {
+      const type = (p.dataset.demo || '').toLowerCase();
+      const targetSel = map[type];
+      if (!targetSel) return;
+      const go = (e) => {
+        e.preventDefault();
+        const t = document.querySelector(targetSel);
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      const win = p.querySelector('.demo-window');
+      if (win) win.addEventListener('click', go);
+      const cap = p.querySelector('.caption-link');
+      if (cap) { cap.setAttribute('href', targetSel); cap.addEventListener('click', go); }
+    });
 
     // Hover auf Carousel pausiert nur Rotation & Demos der Panels
     carousel.addEventListener('mouseenter', () => { stopRotation(); pausePanels(); });
