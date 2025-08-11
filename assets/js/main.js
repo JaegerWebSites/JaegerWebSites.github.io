@@ -95,26 +95,62 @@ document.addEventListener('DOMContentLoaded', () => {
     // B + B2: Hamburger → Seitenpanel
     if (type.startsWith('b')) {
       const panel = root.querySelector('.side-panel');
-      const dnav = root.querySelector('.side-nav');
-      const listEl = dnav ? dnav.querySelector('ul') : null;
-      const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
-      const hl = root.querySelector('.side-highlight');
-      const pos = (el) => {
-        if (!panel || !dnav || !listEl || !hl || !el) return;
-        const top = el.offsetTop - listEl.offsetTop + 4; // 4px Padding-Korrektur
-        hl.style.transform = `translateY(${top}px)`;
-        hl.style.height = `${el.offsetHeight}px`;
-      };
-      const step = () => {
-        if (panel) panel.classList.add('open');
-        const el = items.length ? items[j % items.length] : null;
-        items.forEach(s => s.classList.remove('hover'));
-        if (el) { el.classList.add('hover'); pos(el); }
-        j++;
-      };
-      const start = () => { stop(); step(); timer = setInterval(step, Math.max(1100, speedMs)); };
-      const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
-      root._demoStart = start; root._demoStop = stop; root._demoStep = step; return {start, stop, step};
+  const dnav = root.querySelector('.side-nav');
+  const listEl = dnav ? dnav.querySelector('ul') : null;
+  const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
+  const hl = root.querySelector('.side-highlight');
+  const hamburger = root.querySelector('.hamburger');
+  const bars = hamburger ? Array.from(hamburger.querySelectorAll('span')) : [];
+
+  // Demo-Highlight (nur Hintergrund-Highlight, nicht die animierten Bars)
+  const pos = (el) => {
+    if (!panel || !dnav || !listEl || !hl || !el) return;
+    const top = el.offsetTop - listEl.offsetTop + 4;
+    hl.style.transform = `translateY(${top}px)`;
+    hl.style.height = `${el.offsetHeight}px`;
+  };
+
+  // Bars exakt auf Wortbreite/-position ausrichten
+  function measureBars() {
+    if (!hamburger || bars.length < 3 || items.length < 3) return;
+    const hb = hamburger.getBoundingClientRect();
+    const barOffsetsY = bars.map(b => Math.round(b.getBoundingClientRect().top - hb.top));
+    items.slice(0,3).forEach((s, i) => {
+      const r = s.getBoundingClientRect();
+      const x = Math.round(r.left - hb.left);                        // links bündig zum Wort
+      const y = Math.round((r.bottom - 1) - hb.top - barOffsetsY[i]); // knapp unter Text (-1px)
+      const w = Math.round(r.width);                                  // Wortbreite
+      root.style.setProperty(`--b${i+1}x`, `${x}px`);
+      root.style.setProperty(`--b${i+1}y`, `${y}px`);
+      root.style.setProperty(`--b${i+1}w`, `${w}px`);
+    });
+  }
+
+  let timer = null, j = 0;
+  const step = () => {
+    if (panel) panel.classList.add('open'); // Panel „auf“
+    const el = items.length ? items[j % items.length] : null;
+    items.forEach(s => s.classList.remove('hover'));
+    if (el) { el.classList.add('hover'); pos(el); }
+    j++;
+    // Nach jedem Schritt messen (doppelte rAF, damit Layout final ist)
+    requestAnimationFrame(() => requestAnimationFrame(measureBars));
+  };
+
+  const start = () => {
+    stop();
+    step();
+    timer = setInterval(step, Math.max(1400, speedMs));
+  };
+  const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
+
+  // Auch bei Resize neu messen
+  window.addEventListener('resize', () => {
+    requestAnimationFrame(() => requestAnimationFrame(measureBars));
+  });
+
+  root._demoStart = start; root._demoStop = stop; root._demoStep = step;
+  return { start, stop, step };
     }
 
     // C + C2: Pill-Navigation
