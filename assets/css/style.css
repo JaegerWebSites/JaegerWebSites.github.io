@@ -142,7 +142,7 @@ main{min-height:100svh}
 .side-nav li{position:relative; padding:6px 8px 14px 8px}
 .side-nav li span{position:relative; display:inline-block; padding:6px 0 4px 0; color:var(--accent); font-weight:600; font-size:.86rem}
 /* Wortgenaue Unterstreichung knapp unter dem Text */
-.side-nav li span::after{content:""; position:absolute; left:0; width:100%; height:2px; background:rgba(255,255,255,.22); bottom:0; border-radius:2px}
+.side-nav li span::after{ content: none !important; }
 .side-nav li span.hover{color:var(--text)}
 
 /* Hamburger oben links – drei Balken, die nach unten „wandern“ und Wort-Unterstriche werden */
@@ -150,29 +150,24 @@ main{min-height:100svh}
 .plan[data-demo="b2"] .hamburger{position:absolute; top:12px; left:12px; width:36px; height:28px; background:transparent; border:none; padding:0; cursor:default}
 .panel[data-demo="b"] .hamburger span,
 .plan[data-demo="b2"] .hamburger span{position:absolute; left:0; width:24px; height:2px; background:var(--text); border-radius:2px}
-.panel[data-demo="b"] .hamburger span:nth-child(1),
+/*.panel[data-demo="b"] .hamburger span:nth-child(1),
 .plan[data-demo="b2"] .hamburger span:nth-child(1){top:2px; animation:b-bar1 3.6s var(--ease) infinite both}
 .panel[data-demo="b"] .hamburger span:nth-child(2),
 .plan[data-demo="b2"] .hamburger span:nth-child(2){top:12px; animation:b-bar2 3.6s var(--ease) infinite both}
 .panel[data-demo="b"] .hamburger span:nth-child(3),
-.plan[data-demo="b2"] .hamburger span:nth-child(3){top:22px; animation:b-bar3 3.6s var(--ease) infinite both}
+.plan[data-demo="b2"] .hamburger span:nth-child(3){top:22px; animation:b-bar3 3.6s var(--ease) infinite both}*/
+
+.panel[data-demo="b"] .hamburger span:nth-child(1),
+.plan[data-demo="b2"] .hamburger span:nth-child(1){animation:b-bar1 6s var(--ease) infinite both}
+.panel[data-demo="b"] .hamburger span:nth-child(2),
+.plan[data-demo="b2"] .hamburger span:nth-child(2){animation:b-bar2 6s var(--ease) infinite both}
+.panel[data-demo="b"] .hamburger span:nth-child(3),
+.plan[data-demo="b2"] .hamburger span:nth-child(3){animation:b-bar3 6s var(--ease) infinite both}
 
 /* Ziel-Offsets für die drei Worte (Home / Learn more / About us) */
-@keyframes b-bar1{ /* Home */
-  0%,18%{transform:translate(0,0); width:24px}
-  28%,78%{transform:translate(22px,32px); width:56px}
-  80%,100%{transform:translate(0,0); width:24px}
-}
-@keyframes b-bar2{ /* Learn more */
-  0%,18%{transform:translate(0,0); width:24px}
-  28%,78%{transform:translate(22px,68px); width:110px}
-  80%,100%{transform:translate(0,0); width:24px}
-}
-@keyframes b-bar3{ /* About us */
-  0%,18%{transform:translate(0,0); width:24px}
-  28%,78%{transform:translate(22px,104px); width:92px}
-  80%,100%{transform:translate(0,0); width:24px}
-}
+@keyframes b-bar1{0%,18%{transform:translate(0,0);width:24px;opacity:1}28%,78%{transform:translate(var(--b1x,12px),var(--b1y,32px));width:var(--b1w,56px);opacity:1}80%,100%{transform:translate(0,0);width:24px;opacity:0}}
+@keyframes b-bar2{0%,18%{transform:translate(0,0);width:24px;opacity:1}28%,78%{transform:translate(var(--b2x,12px),var(--b2y,68px));width:var(--b2w,110px);opacity:1}80%,100%{transform:translate(0,0);width:24px;opacity:0}}
+@keyframes b-bar3{0%,18%{transform:translate(0,0);width:24px;opacity:1}28%,78%{transform:translate(var(--b3x,12px),var(--b3y,104px));width:var(--b3w,92px);opacity:1}80%,100%{transform:translate(0,0);width:24px;opacity:0}}
 
 /* ==== Demo C: Pill-Navigation ==== */
 .pill-nav{position:relative}
