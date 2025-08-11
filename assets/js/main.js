@@ -2,11 +2,9 @@
   Navigation: aktiver Link + animierter Underline-Indicator
   Mobile-Menü: Toggle
   Kleinigkeiten: dynamisches Jahr
-  + Learn-More Demo: Cursor & Underline simulieren ein Hover-Video
+  + Learn-More: 3D-Carousel mit drei Demo-„Videos“ (Simulation)
 */
 
-// Vereinfachung: statt IIFE verwenden wir DOMContentLoaded – vermeidet Klammer-Konflikte
-// und stellt sicher, dass das DOM existiert.
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.querySelector('[data-header]');
   const nav = document.querySelector('[data-nav]');
@@ -44,20 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
     underline.style.transform = `translateX(${r.left - pr.left}px)`;
   };
 
-  // initiale Position
   requestAnimationFrame(() => positionUnderline(activeLink));
 
-  // Hover-/Focus-Bewegung
   links.forEach(link => {
     link.addEventListener('mouseenter', () => positionUnderline(link));
     link.addEventListener('focus', () => positionUnderline(link));
   });
-  if (nav) {
-    nav.addEventListener('mouseleave', () => positionUnderline(activeLink));
-  }
+  if (nav) nav.addEventListener('mouseleave', () => positionUnderline(activeLink));
   window.addEventListener('resize', () => positionUnderline(activeLink));
 
-  // Mobile Toggle
   if (toggle && header) {
     toggle.addEventListener('click', () => {
       const open = header.classList.toggle('open');
@@ -66,77 +59,97 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Demo-"Video" auf der Learn-More-Seite =====
-  const demo = document.querySelector('[data-demo]');
-  if (demo) {
-    const canvas = demo.querySelector('.demo-canvas');
-    const dnav = demo.querySelector('.demo-nav');
-    const dlist = dnav ? dnav.querySelector('ul') : null;
+  // ===== Learn-More: 3D-Carousel =====
+  const carousel = document.querySelector('[data-carousel]');
+  if (!carousel) return;
+
+  const panels = Array.from(carousel.querySelectorAll('.panel'));
+  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let rotTimer = null;
+  let idx = 0;
+
+  const applyPositions = () => {
+    panels.forEach(p => p.classList.remove('is-front','is-left','is-right'));
+    const front = panels[idx % panels.length];
+    const right = panels[(idx + 1) % panels.length];
+    const left  = panels[(idx + 2) % panels.length];
+    if (front) front.classList.add('is-front');
+    if (right) right.classList.add('is-right');
+    if (left)  left.classList.add('is-left');
+  };
+
+  const startRotation = () => {
+    stopRotation();
+    rotTimer = setInterval(() => {
+      idx = (idx + 1) % panels.length;
+      applyPositions();
+    }, 2000);
+  };
+  const stopRotation = () => { if (rotTimer) { clearInterval(rotTimer); rotTimer = null; } };
+
+  // Demo-Hover in jedem Panel simulieren
+  const attachDemo = (panel, speedMs) => {
+    const dnav = panel.querySelector('.demo-nav');
+    const list = dnav ? dnav.querySelector('ul') : null;
     const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
-    const dUnderline = dnav ? dnav.querySelector('.demo-underline') : null;
-    const cursor = demo.querySelector('.cursor');
+    const u = dnav ? dnav.querySelector('.demo-underline') : null;
+    let j = 0; let timer = null;
 
-    const posUnder = (el) => {
-      if (!dUnderline || !dlist || !el) return;
+    const pos = (el) => {
+      if (!u || !list || !el) return;
       const r = el.getBoundingClientRect();
-      const pr = dlist.getBoundingClientRect();
-      dUnderline.style.width = `${r.width}px`;
-      dUnderline.style.transform = `translateX(${r.left - pr.left}px)`;
+      const pr = list.getBoundingClientRect();
+      u.style.width = `${r.width}px`;
+      u.style.transform = `translateX(${r.left - pr.left}px)`;
     };
-
-    const moveCursor = (el) => {
-      if (!cursor || !canvas || !el) return;
-      const r = el.getBoundingClientRect();
-      const pr = canvas.getBoundingClientRect();
-      const x = r.left - pr.left + r.width / 2;
-      const y = r.top - pr.top + r.height / 1.2;
-      cursor.style.opacity = '1';
-      cursor.style.transform = `translate(${x}px, ${y}px) rotate(-15deg)`;
-    };
-
-    let i = 0;
-    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const intervalMs = prefersReduced ? 2800 : 1600;
-
     const step = () => {
-      const el = items.length ? items[i % items.length] : null;
+      const el = items.length ? items[j % items.length] : null;
       items.forEach(s => s.classList.remove('hover'));
-      if (el) {
-        el.classList.add('hover');
-        posUnder(el);
-        moveCursor(el);
-      }
-      i++;
+      if (el) { el.classList.add('hover'); pos(el); }
+      j++;
     };
+    const start = () => { stop(); step(); timer = setInterval(step, speedMs); };
+    const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
 
-    const startDemo = () => {
-      step();
-      demo.dataset.running = 'true';
-      if (demo._timer) clearInterval(demo._timer);
-      demo._timer = setInterval(step, intervalMs);
-    };
+    // Exponiere Steuerung am Panel
+    panel._demoStart = start; panel._demoStop = stop; panel._demoStep = step;
 
-    // etwas Luft lassen, bis Layout/Schriften stabil sind
-    setTimeout(() => {
-      step();
-      startDemo();
-    }, 300);
+    // Pause/Resume bei Hover auf Panel ODER Caption
+    panel.addEventListener('mouseenter', () => { stopRotation(); stop(); });
+    panel.addEventListener('mouseleave', () => { if (!prefersReduced) { startRotation(); start(); } });
+  };
 
-    // optional: pausieren beim Hover, fortsetzen beim Verlassen
-    demo.addEventListener('mouseenter', () => {
-      if (demo._timer) { clearInterval(demo._timer); demo._timer = null; }
-    });
-    demo.addEventListener('mouseleave', () => {
-      if (!demo._timer) demo._timer = setInterval(step, intervalMs);
-    });
+  // verschiedene Geschwindigkeiten für Variation
+  panels.forEach((p, i) => attachDemo(p, i === 0 ? 1400 : i === 1 ? 1200 : 1700));
 
-    // bei Resize neu justieren
-    window.addEventListener('resize', () => {
-      const currentEl = items.length ? items[(i - 1 + items.length) % items.length] : null;
-      if (currentEl) {
-        posUnder(currentEl);
-        moveCursor(currentEl);
-      }
-    });
+  // zusätzlich: Hover auf gesamtem Carousel pausiert alles
+  const pauseAll = () => { stopRotation(); panels.forEach(p => p._demoStop && p._demoStop()); };
+  const resumeAll = () => { if (!prefersReduced) { startRotation(); panels.forEach(p => p._demoStart && p._demoStart()); } };
+  carousel.addEventListener('mouseenter', pauseAll);
+  carousel.addEventListener('mouseleave', resumeAll);
+
+  // initiale Position & Start
+  applyPositions();
+  if (!prefersReduced) {
+    panels.forEach(p => p._demoStart && p._demoStart());
+    startRotation();
+  } else {
+    panels.forEach(p => p._demoStep && p._demoStep());
   }
+
+  // bei Resize Underlines neu positionieren
+  addEventListener('resize', () => {
+    panels.forEach(p => {
+      const dnav = p.querySelector('.demo-nav');
+      const act = dnav ? dnav.querySelector('span.hover') : null;
+      const u = dnav ? dnav.querySelector('.demo-underline') : null;
+      const list = dnav ? dnav.querySelector('ul') : null;
+      if (act && u && list) {
+        const r = act.getBoundingClientRect();
+        const pr = list.getBoundingClientRect();
+        u.style.width = `${r.width}px`;
+        u.style.transform = `translateX(${r.left - pr.left}px)`;
+      }
+    });
+  });
 });
