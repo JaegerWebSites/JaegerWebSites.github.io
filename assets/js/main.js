@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let rotTimer = null;
   let idx = 0;
+  let rotating = false;
 
   const applyPositions = () => {
     panels.forEach(p => p.classList.remove('is-front','is-left','is-right'));
@@ -78,12 +79,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (left)  left.classList.add('is-left');
   };
 
+  const pauseAll = () => { stopRotation(); panels.forEach(p => p._demoStop && p._demoStop()); };
+  const resumeAll = () => { if (!prefersReduced) { startRotation(); panels.forEach(p => p._demoStart && p._demoStart()); } };
+
+  const ROTATE_INTERVAL_MS = 3500; // langsamer
+  const PANEL_TRANS_MS = 800; // muss zur CSS transition passen
+
+  const beginRotation = () => {
+    if (rotating) return;
+    rotating = true;
+    carousel.classList.add('is-rotating');
+    pauseAll();
+  };
+  const endRotation = () => {
+    rotating = false;
+    carousel.classList.remove('is-rotating');
+    if (!prefersReduced) {
+      panels.forEach(p => p._demoStart && p._demoStart());
+    } else {
+      panels.forEach(p => p._demoStep && p._demoStep());
+    }
+  };
+
+  const rotateOnce = () => {
+    beginRotation();
+    idx = (idx + 1) % panels.length;
+    applyPositions();
+    setTimeout(endRotation, PANEL_TRANS_MS + 120);
+  };
+
   const startRotation = () => {
     stopRotation();
-    rotTimer = setInterval(() => {
-      idx = (idx + 1) % panels.length;
-      applyPositions();
-    }, 2000);
+    rotTimer = setInterval(rotateOnce, ROTATE_INTERVAL_MS);
   };
   const stopRotation = () => { if (rotTimer) { clearInterval(rotTimer); rotTimer = null; } };
 
@@ -115,16 +142,14 @@ document.addEventListener('DOMContentLoaded', () => {
     panel._demoStart = start; panel._demoStop = stop; panel._demoStep = step;
 
     // Pause/Resume bei Hover auf Panel ODER Caption
-    panel.addEventListener('mouseenter', () => { stopRotation(); stop(); });
-    panel.addEventListener('mouseleave', () => { if (!prefersReduced) { startRotation(); start(); } });
+    panel.addEventListener('mouseenter', () => { pauseAll(); });
+    panel.addEventListener('mouseleave', () => { if (!prefersReduced) { resumeAll(); } });
   };
 
   // verschiedene Geschwindigkeiten für Variation
-  panels.forEach((p, i) => attachDemo(p, i === 0 ? 1400 : i === 1 ? 1200 : 1700));
+  panels.forEach((p, i) => attachDemo(p, i === 0 ? 1600 : i === 1 ? 1400 : 1800));
 
   // zusätzlich: Hover auf gesamtem Carousel pausiert alles
-  const pauseAll = () => { stopRotation(); panels.forEach(p => p._demoStop && p._demoStop()); };
-  const resumeAll = () => { if (!prefersReduced) { startRotation(); panels.forEach(p => p._demoStart && p._demoStart()); } };
   carousel.addEventListener('mouseenter', pauseAll);
   carousel.addEventListener('mouseleave', resumeAll);
 
