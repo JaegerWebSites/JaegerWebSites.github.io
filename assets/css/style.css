@@ -14,10 +14,10 @@
   --focus: #9ae6b4;
   --ease: cubic-bezier(.215, .61, .355, 1);
 
-  /* Panelgröße & Spreizung (explizit ~1/3 der Bildschirmbreite & -höhe) */
-  --panel-w: clamp(320px, 33vw, 720px);
-  --panel-h: clamp(260px, 33vh, 640px);
-  --spread: clamp(24vw, 36vw, 44vw); /* Abstand der äußeren Panels zur Mitte */
+  /* Panelgröße & Spreizung (≈ 1/3 Screen, weiter auseinandergeschoben) */
+  --panel-w: clamp(360px, 33.33vw, 860px);
+  --panel-h: clamp(300px, 33.33vh, 720px);
+  --spread: clamp(32vw, 42vw, 52vw); /* Abstand der äußeren Panels zur Mitte */
 }
 
 * { box-sizing: border-box; }
@@ -120,11 +120,13 @@ main { min-height: 100svh; }
   min-height: 100svh;
   display: grid; place-items: center;
   position: relative; overflow: clip;
+  /* Layered gradients: futuristischer Look à la Tesla, ohne Bilddatei */
   background:
     radial-gradient(60% 40% at 20% 0%, rgba(56,189,248,.18) 0, rgba(56,189,248,0) 60%),
     radial-gradient(50% 35% at 80% 15%, rgba(167,139,250,.18) 0, rgba(167,139,250,0) 65%),
     linear-gradient(180deg, #0b0f14 0%, #0a0d12 100%);
 }
+/* dezentes Grid-Overlay */
 .hero::after {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background-image:
@@ -174,7 +176,7 @@ main { min-height: 100svh; }
 
 .carousel {
   position: relative;
-  width: min(100vw, 1600px); /* mehr Raum an den Seiten */
+  width: min(100vw, 1800px); /* noch mehr Raum an den Seiten */
   height: calc(var(--panel-h) + 84px); /* Panel + Caption */
   perspective: 1400px;
   transform-style: preserve-3d;
@@ -195,15 +197,26 @@ main { min-height: 100svh; }
   filter: saturate(.92) brightness(.95);
   transition: transform .8s var(--ease), filter .8s var(--ease), opacity .6s var(--ease);
 }
-.panel.is-front { transform: translate(-50%, -50%) translateZ(10vmin) rotateY(0deg) scale(1); z-index: 3; filter: none; }
+.panel.is-front { transform: translate(-50%, -50%) translateZ(12vmin) rotateY(0deg) scale(1); z-index: 3; filter: none; }
 /* Äußere Panels: in die GEGENrichtung kippen und weiter auseinanderrücken */
-.panel.is-left  { transform: translate(-50%, -50%) rotateY(-30deg) translateX(calc(-1 * var(--spread))) translateZ(-8vmin) scale(.92); z-index: 2; }
-.panel.is-right { transform: translate(-50%, -50%) rotateY(30deg)  translateX(var(--spread)) translateZ(-8vmin)  scale(.92); z-index: 2; }
+.panel.is-left  { transform: translate(-50%, -50%) rotateY(-32deg) translateX(calc(-1 * var(--spread))) translateZ(-10vmin) scale(.93); z-index: 2; }
+.panel.is-right { transform: translate(-50%, -50%) rotateY(32deg)  translateX(var(--spread)) translateZ(-10vmin)  scale(.93); z-index: 2; }
 .panel:hover { filter: brightness(1.06) saturate(1.05); }
 
-/* Demo-Fenster füllt das Panel */
-.panel .demo-window { width: 100%; height: 100%; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #0e131a; box-shadow: 0 16px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03); }
-.demo-chrome { height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; background: rgba(255,255,255,.02); border-bottom: 1px solid var(--line); }
+/* Demo-Fenster füllt das Panel, stärker abgehoben */
+.panel .demo-window {
+  position: relative;
+  width: 100%; height: 100%;
+  border-radius: 18px; overflow: hidden;
+  border: 2px solid rgba(255,255,255,.35);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow:
+    0 28px 70px rgba(0,0,0,.55),
+    0 0 0 1px rgba(255,255,255,.08) inset,
+    0 0 40px rgba(255,255,255,.06);
+}
+
+.demo-chrome { height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; background: rgba(255,255,255,.03); border-bottom: 1px solid var(--line); }
 .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; opacity: .85; }
 .dot.red { background: #ff5f57; }
 .dot.yellow { background: #ffbd2e; }
@@ -217,6 +230,10 @@ main { min-height: 100svh; }
 .demo-nav li span.hover { color: var(--text); }
 .demo-underline { position: absolute; left: 0; bottom: -2px; height: 2px; width: 0; background: var(--text); border-radius: 2px; opacity: .9; transition: transform .4s var(--ease), width .4s var(--ease); }
 
+/* Während der Rotation Unterstriche ausblenden & Transition deaktivieren */
+.carousel.is-rotating .demo-underline { opacity: 0 !important; transition: none !important; }
+.carousel.is-rotating .panel { pointer-events: none; }
+
 .demo-content { margin-top: 12px; display: grid; gap: 12px; grid-template-columns: 1fr 1fr; align-content: start; }
 .placeholder-card { border: 1px solid var(--line); border-radius: 14px; height: 120px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); }
 .placeholder-card.thin { grid-column: 1 / -1; height: 56px; }
@@ -226,11 +243,11 @@ main { min-height: 100svh; }
 .panel:hover .caption-link { border-bottom-color: var(--text); }
 
 @media (max-width: 1200px) {
-  :root { --spread: clamp(18vw, 28vw, 34vw); }
+  :root { --spread: clamp(24vw, 34vw, 42vw); }
 }
 @media (max-width: 900px) {
   .carousel { width: min(96vw, 720px); height: calc(var(--panel-h) + 84px); }
-  :root { --panel-w: clamp(280px, 86vw, 640px); --panel-h: clamp(240px, 44vh, 560px); --spread: 0vw; }
+  :root { --panel-w: clamp(300px, 86vw, 640px); --panel-h: clamp(260px, 44vh, 560px); --spread: 0vw; }
   .panel.is-left, .panel.is-right { transform: translate(-50%, -50%) translateZ(-6vmin) scale(.92); }
 }
 
