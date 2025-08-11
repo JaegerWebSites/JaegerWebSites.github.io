@@ -9,7 +9,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const header = document.querySelector('[data-header]');
   const nav = document.querySelector('[data-nav]');
-  const list = nav ? nav.querySelector('ul') : null;
+  const navList = nav ? nav.querySelector('ul') : null;
   const underline = nav ? nav.querySelector('.nav-underline') : null;
   const links = nav ? Array.from(nav.querySelectorAll('[data-nav-link]')) : [];
   const toggle = document.querySelector('[data-toggle]');
@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Underline positionieren
   const positionUnderline = (el) => {
-    if (!underline || !list || !el) return;
+    if (!underline || !navList || !el) return;
     const r = el.getBoundingClientRect();
-    const pr = list.getBoundingClientRect();
+    const pr = navList.getBoundingClientRect();
     underline.style.opacity = '1';
     underline.style.width = `${r.width}px`;
     underline.style.transform = `translateX(${r.left - pr.left}px)`;
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
       const u = dnav ? dnav.querySelector('.demo-underline') : null;
       const pos = (el) => {
-        if (!u || !list || !el) return;
+        if (!u || !listEl || !el) return;
         const left = el.offsetLeft - listEl.offsetLeft;
         u.style.width = `${el.offsetWidth}px`;
         u.style.transform = `translateX(${left}px)`;
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
       const hl = root.querySelector('.side-highlight');
       const pos = (el) => {
-        if (!panel || !dnav || !list || !hl || !el) return;
+        if (!panel || !dnav || !listEl || !hl || !el) return;
         const top = el.offsetTop - listEl.offsetTop + 4; // 4px Padding-Korrektur
         hl.style.transform = `translateY(${top}px)`;
         hl.style.height = `${el.offsetHeight}px`;
@@ -210,4 +210,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 60);
   }
 
-  // =====
+  // ===== About: Formular-Validierung & Mailto-Fallback =====
+  const form = document.getElementById('contactForm');
+  if (form) {
+    const err = form.querySelector('.form-error');
+    const fields = {
+      firstName: form.querySelector('#firstName'),
+      lastName: form.querySelector('#lastName'),
+      email: form.querySelector('#email'),
+      website: form.querySelector('#website'),
+      message: form.querySelector('#message')
+    };
+
+    const clearErrors = () => {
+      Object.values(fields).forEach(f => f && f.classList.remove('invalid'));
+      if (err) err.hidden = true;
+    };
+
+    const validEmail = (v) => /.+@.+\..+/.test(v);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearErrors();
+      let ok = true;
+      if (!fields.firstName.value.trim()) { fields.firstName.classList.add('invalid'); ok = false; }
+      if (!fields.lastName.value.trim())  { fields.lastName.classList.add('invalid');  ok = false; }
+      if (!fields.email.value.trim() || !validEmail(fields.email.value.trim())) { fields.email.classList.add('invalid'); ok = false; }
+
+      if (!ok) {
+        if (err) err.hidden = false;
+        return;
+      }
+
+      // Mailto-Fallback – öffnet Standard-Mailprogramm mit vorgefülltem Text
+      const to = 'benedikt.jaeger.bjj@gmail.com';
+      const subject = 'Kontaktanfrage Jäger WebSites';
+      const body = [
+        `Name: ${fields.lastName.value.trim()}`,
+        `Vorname: ${fields.firstName.value.trim()}`,
+        `Website: ${fields.website.value.trim() || '-'}`,
+        `E-Mail: ${fields.email.value.trim()}`,
+        `Text: ${fields.message.value.trim() || '-'}`
+      ].join('\r\n');
+
+      const m = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const a = document.createElement('a');
+      a.href = m; a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+
+    // Live-Fehler zurücknehmen, sobald Nutzer tippt / Fokus verliert
+    ['firstName','lastName','email'].forEach(key => {
+      const f = fields[key];
+      if (!f) return;
+      f.addEventListener('input', () => {
+        f.classList.remove('invalid');
+        if (err) err.hidden = true;
+      });
+      f.addEventListener('blur', () => {
+        if (key === 'email') {
+          if (f.value && !/.+@.+\..+/.test(f.value)) f.classList.add('invalid'); else f.classList.remove('invalid');
+        } else {
+          if (f.value.trim()) f.classList.remove('invalid');
+        }
+      });
+    });
+  }
+
+  // bei Resize alle Indikatoren sauber neu setzen
+  addEventListener('resize', () => {
+    [...(panelEls.length ? panelDemos : []), ...planDemos].forEach(d => d.step && d.step());
+  });
+});
