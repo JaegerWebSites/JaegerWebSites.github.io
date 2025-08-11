@@ -26,41 +26,93 @@
     </header>
 
     <main>
-      <!-- Learn More: eigener, aber verwandter Hintergrund + Demo-Fenster vor dem Background -->
+      <!-- Learn More: 3D-Carousel mit drei "Videos" (Simulation) -->
       <section class="learn-hero">
-        <div class="learn-hero-inner">
-          <!-- Demo-Fenster: kleines "Browser"-Mockup mit animiertem Hover-Video (Simulation) -->
-          <div class="demo-window" data-demo>
-            <div class="demo-chrome">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-              <div class="demo-url">jaeger-websites.dev/demo</div>
-            </div>
-            <div class="demo-canvas">
-              <nav class="demo-nav">
-                <ul>
-                  <li><span>Home</span></li>
-                  <li><span>About</span></li>
-                  <li><span>Learn&nbsp;More</span></li>
-                </ul>
-                <div class="demo-underline" aria-hidden="true"></div>
-              </nav>
-
-              <div class="demo-content">
-                <div class="placeholder-card"></div>
-                <div class="placeholder-card"></div>
-                <div class="placeholder-card thin"></div>
+        <div class="carousel" data-carousel>
+          <!-- Panel A (zentral startend) -->
+          <figure class="panel is-front" data-demo="a">
+            <div class="demo-window">
+              <div class="demo-chrome">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <div class="demo-url">jaeger-websites.dev/ui</div>
               </div>
-
-              <div class="cursor" aria-hidden="true"></div>
+              <div class="demo-canvas">
+                <nav class="demo-nav">
+                  <ul>
+                    <li><span>Design</span></li>
+                    <li><span>Build</span></li>
+                    <li><span>Launch</span></li>
+                  </ul>
+                  <div class="demo-underline" aria-hidden="true"></div>
+                </nav>
+                <div class="demo-content">
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card thin"></div>
+                </div>
+              </div>
             </div>
-          </div>
+            <figcaption class="caption"><a class="caption-link" href="#">Erfahre mehr</a></figcaption>
+          </figure>
 
-          <div class="learn-copy">
-            <h1 class="page-title">Mehr erfahren</h1>
-            <p class="muted">Hier zeigen wir später dein Angebot, Prozess & Tech – unten läuft eine kleine Interaktions-Demo.</p>
-          </div>
+          <!-- Panel B (rechts startend) -->
+          <figure class="panel is-right" data-demo="b">
+            <div class="demo-window">
+              <div class="demo-chrome">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <div class="demo-url">jaeger-websites.dev/portfolio</div>
+              </div>
+              <div class="demo-canvas">
+                <nav class="demo-nav">
+                  <ul>
+                    <li><span>Portfolio</span></li>
+                    <li><span>Leistungen</span></li>
+                    <li><span>Kontakt</span></li>
+                    <li><span>Blog</span></li>
+                  </ul>
+                  <div class="demo-underline" aria-hidden="true"></div>
+                </nav>
+                <div class="demo-content">
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card thin"></div>
+                  <div class="placeholder-card"></div>
+                </div>
+              </div>
+            </div>
+            <figcaption class="caption"><a class="caption-link" href="#">Erfahre mehr</a></figcaption>
+          </figure>
+
+          <!-- Panel C (links startend) -->
+          <figure class="panel is-left" data-demo="c">
+            <div class="demo-window">
+              <div class="demo-chrome">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <div class="demo-url">jaeger-websites.dev/studio</div>
+              </div>
+              <div class="demo-canvas">
+                <nav class="demo-nav">
+                  <ul>
+                    <li><span>Start</span></li>
+                    <li><span>Work</span></li>
+                    <li><span>Team</span></li>
+                  </ul>
+                  <div class="demo-underline" aria-hidden="true"></div>
+                </nav>
+                <div class="demo-content">
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card thin"></div>
+                </div>
+              </div>
+            </div>
+            <figcaption class="caption"><a class="caption-link" href="#">Erfahre mehr</a></figcaption>
+          </figure>
         </div>
 
         <!-- dekorative Elemente wie auf der Startseite -->
