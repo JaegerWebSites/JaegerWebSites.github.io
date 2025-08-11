@@ -59,138 +59,132 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Learn-More: 3D-Carousel =====
+  // ===== Learn-More: 3D-Carousel + Demos =====
   const carousel = document.querySelector('[data-carousel]');
-  if (!carousel) return;
+  const panelEls = carousel ? Array.from(carousel.querySelectorAll('.panel')) : [];
 
-  const panels = Array.from(carousel.querySelectorAll('.panel'));
-  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let rotTimer = null;
-  let idx = 0;
-  let rotating = false;
+  // Helfer für Demo-Animationen (A, B, C) – wiederverwendbar für Panels und Pläne
+  const attachDemo = (root, speedMs = 1600) => {
+    const type = (root.dataset.demo || '').toLowerCase();
+    let timer = null; let j = 0;
 
+    // A + A2: klassische Top-Navigation
+    if (type.startsWith('a')) {
+      const dnav = root.querySelector('.demo-nav');
+      const list = dnav ? dnav.querySelector('ul') : null;
+      const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
+      const u = dnav ? dnav.querySelector('.demo-underline') : null;
+      const pos = (el) => {
+        if (!u || !list || !el) return;
+        const left = el.offsetLeft - list.offsetLeft;
+        u.style.width = `${el.offsetWidth}px`;
+        u.style.transform = `translateX(${left}px)`;
+      };
+      const step = () => {
+        const el = items.length ? items[j % items.length] : null;
+        items.forEach(s => s.classList.remove('hover'));
+        if (el) { el.classList.add('hover'); pos(el); }
+        j++;
+      };
+      const start = () => { stop(); step(); timer = setInterval(step, speedMs); };
+      const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
+      root._demoStart = start; root._demoStop = stop; root._demoStep = step; return {start, stop, step};
+    }
+
+    // B + B2: Hamburger → Seitenpanel
+    if (type.startsWith('b')) {
+      const panel = root.querySelector('.side-panel');
+      const dnav = root.querySelector('.side-nav');
+      const list = dnav ? dnav.querySelector('ul') : null;
+      const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
+      const hl = root.querySelector('.side-highlight');
+      const pos = (el) => {
+        if (!panel || !dnav || !list || !hl || !el) return;
+        const top = el.offsetTop - list.offsetTop + 4; // 4px Padding-Korrektur
+        hl.style.transform = `translateY(${top}px)`;
+        hl.style.height = `${el.offsetHeight}px`;
+      };
+      const step = () => {
+        // open/close simulieren + Highlight bewegen
+        if (panel) panel.classList.add('open');
+        const el = items.length ? items[j % items.length] : null;
+        items.forEach(s => s.classList.remove('hover'));
+        if (el) { el.classList.add('hover'); pos(el); }
+        j++;
+      };
+      const start = () => { stop(); step(); timer = setInterval(step, Math.max(1100, speedMs)); };
+      const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
+      root._demoStart = start; root._demoStop = stop; root._demoStep = step; return {start, stop, step};
+    }
+
+    // C + C2: Pill-Navigation
+    if (type.startsWith('c')) {
+      const pillsWrap = root.querySelector('.pills');
+      const pills = pillsWrap ? Array.from(pillsWrap.querySelectorAll('.pill')) : [];
+      const ind = pillsWrap ? pillsWrap.querySelector('.pill-indicator') : null;
+      const pos = (el) => {
+        if (!pillsWrap || !ind || !el) return;
+        const left = el.offsetLeft - pillsWrap.offsetLeft;
+        ind.style.width = `${el.offsetWidth}px`;
+        ind.style.transform = `translateX(${left}px)`;
+      };
+      const step = () => {
+        const el = pills.length ? pills[j % pills.length] : null;
+        pills.forEach(p => p.classList.remove('active'));
+        if (el) { el.classList.add('active'); pos(el); }
+        j++;
+      };
+      const start = () => { stop(); step(); timer = setInterval(step, Math.max(1300, speedMs)); };
+      const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
+      root._demoStart = start; root._demoStop = stop; root._demoStep = step; return {start, stop, step};
+    }
+
+    return null;
+  };
+
+  // Demos an Carousel-Panels anhängen
+  const panelDemos = panelEls.map((p, i) => attachDemo(p, i === 0 ? 1500 : i === 1 ? 1300 : 1700)).filter(Boolean);
+
+  // Carousel-Rotation (ohne den Interval zu stoppen)
+  let idx = 0; let rotating = false; let rotTimer = null;
   const applyPositions = () => {
-    panels.forEach(p => p.classList.remove('is-front','is-left','is-right'));
-    const front = panels[idx % panels.length];
-    const right = panels[(idx + 1) % panels.length];
-    const left  = panels[(idx + 2) % panels.length];
+    panelEls.forEach(p => p.classList.remove('is-front','is-left','is-right'));
+    const front = panelEls[idx % panelEls.length];
+    const right = panelEls[(idx + 1) % panelEls.length];
+    const left  = panelEls[(idx + 2) % panelEls.length];
     if (front) front.classList.add('is-front');
     if (right) right.classList.add('is-right');
     if (left)  left.classList.add('is-left');
   };
+  const pausePanels = () => { panelDemos.forEach(d => d.stop()); };
+  const resumePanels = () => { panelDemos.forEach(d => d.start()); };
 
-  const pauseAll = () => { stopRotation(); panels.forEach(p => p._demoStop && p._demoStop()); };
-  const resumeAll = () => { if (!prefersReduced) { startRotation(); panels.forEach(p => p._demoStart && p._demoStart()); } };
+  const ROTATE_INTERVAL_MS = 2500; // 2.5s
+  const PANEL_TRANS_MS = 800;
 
-  const ROTATE_INTERVAL_MS = 2500; // langsamer
-  const PANEL_TRANS_MS = 800; // muss zur CSS transition passen
+  const beginRotation = () => { if (rotating) return; rotating = true; carousel.classList.add('is-rotating'); pausePanels(); };
+  const endRotation   = () => { rotating = false; carousel.classList.remove('is-rotating'); requestAnimationFrame(() => requestAnimationFrame(resumePanels)); };
 
-  const beginRotation = () => {
-    if (rotating) return;
-    rotating = true;
-    carousel.classList.add('is-rotating');
-    pauseAll();
-  };
-  const endRotation = () => {
-    rotating = false;
-    carousel.classList.remove('is-rotating');
-    const recalc = () => {
-      panels.forEach(p => {
-        if (prefersReduced) {
-          p._demoStep && p._demoStep();
-        } else {
-          p._demoStart && p._demoStart();
-        }
-      });
-    };
-    // kurz warten bis die CSS-Transition fertig ist, dann neu berechnen
-    requestAnimationFrame(() => requestAnimationFrame(recalc));
-  };
+  const rotateOnce = () => { beginRotation(); idx = (idx + 1) % panelEls.length; applyPositions(); setTimeout(endRotation, PANEL_TRANS_MS + 120); };
+  const startRotation = () => { if (rotTimer) clearInterval(rotTimer); rotTimer = setInterval(rotateOnce, ROTATE_INTERVAL_MS); };
+  const stopRotation  = () => { if (rotTimer) { clearInterval(rotTimer); rotTimer = null; } };
 
-  const rotateOnce = () => {
-    beginRotation();
-    idx = (idx + 1) % panels.length;
+  if (carousel) {
     applyPositions();
-    setTimeout(endRotation, PANEL_TRANS_MS + 120);
-  };
-
-  const startRotation = () => {
-    stopRotation();
-    rotTimer = setInterval(rotateOnce, ROTATE_INTERVAL_MS);
-  };
-  const stopRotation = () => { if (rotTimer) { clearInterval(rotTimer); rotTimer = null; } };
-
-  // Demo-Hover in jedem Panel simulieren
-  const attachDemo = (panel, speedMs) => {
-    const dnav = panel.querySelector('.demo-nav');
-    const list = dnav ? dnav.querySelector('ul') : null;
-    const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
-    const u = dnav ? dnav.querySelector('.demo-underline') : null;
-    let j = 0; let timer = null;
-
-    const pos = (el) => {
-      if (!u || !list || !el) return;
-      // Nutze Offsets innerhalb der UL (stabiler als viewport-Rects bei 3D-Transforms)
-      const left = el.offsetLeft - list.offsetLeft;
-      const width = el.offsetWidth;
-      u.style.width = `${width}px`;
-      u.style.transform = `translateX(${left}px)`;
-    };
-    const step = () => {
-      const el = items.length ? items[j % items.length] : null;
-      items.forEach(s => s.classList.remove('hover'));
-      if (el) { el.classList.add('hover'); pos(el); }
-      j++;
-    };
-    const start = () => {
-      stop();
-      step();
-      // Doppelte RAF, damit Layout & 3D-Transform stehen
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        const current = items.length ? items[(j - 1 + items.length) % items.length] : null;
-        if (current) pos(current);
-      }));
-      timer = setInterval(step, speedMs);
-    };
-    const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
-
-    // Exponiere Steuerung am Panel
-    panel._demoStart = start; panel._demoStop = stop; panel._demoStep = step;
-
-    // Pause/Resume bei Hover auf Panel ODER Caption
-    panel.addEventListener('mouseenter', () => { pauseAll(); });
-    panel.addEventListener('mouseleave', () => { if (!prefersReduced) { resumeAll(); } });
-  };
-
-  // verschiedene Geschwindigkeiten für Variation
-  panels.forEach((p, i) => attachDemo(p, i === 0 ? 1600 : i === 1 ? 1400 : 1800));
-
-  // zusätzlich: Hover auf gesamtem Carousel pausiert alles
-  carousel.addEventListener('mouseenter', pauseAll);
-  carousel.addEventListener('mouseleave', resumeAll);
-
-  // initiale Position & Start
-  applyPositions();
-  if (!prefersReduced) {
-    panels.forEach(p => p._demoStart && p._demoStart());
+    panelDemos.forEach(d => d.start());
     startRotation();
-  } else {
-    panels.forEach(p => p._demoStep && p._demoStep());
+
+    // Hover auf Carousel pausiert nur Rotation & Demos der Panels
+    carousel.addEventListener('mouseenter', () => { stopRotation(); pausePanels(); });
+    carousel.addEventListener('mouseleave', () => { startRotation(); resumePanels(); });
   }
 
-  // bei Resize Underlines neu positionieren
+  // ===== Demos in den Plans darunter =====
+  const planEls = Array.from(document.querySelectorAll('.plan'));
+  const planDemos = planEls.map((el, i) => attachDemo(el, i === 1 ? 1400 : 1600)).filter(Boolean);
+
+  // bei Resize alle Indikatoren sauber neu setzen
   addEventListener('resize', () => {
-    panels.forEach(p => {
-      const dnav = p.querySelector('.demo-nav');
-      const act = dnav ? dnav.querySelector('span.hover') : null;
-      const u = dnav ? dnav.querySelector('.demo-underline') : null;
-      const list = dnav ? dnav.querySelector('ul') : null;
-      if (act && u && list) {
-        const r = act.getBoundingClientRect();
-        const pr = list.getBoundingClientRect();
-        u.style.width = `${r.width}px`;
-        u.style.transform = `translateX(${r.left - pr.left}px)`;
-      }
-    });
+    [...panelDemos, ...planDemos].forEach(d => d.step());
   });
 });
