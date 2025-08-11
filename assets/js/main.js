@@ -210,5 +210,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 60);
   }
 
-  // ===== About: Formular-Validierung & Mailto-Fallback =====
-  const form = docu
+  // =====
