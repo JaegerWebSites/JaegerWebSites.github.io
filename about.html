@@ -25,10 +25,53 @@
       </div>
     </header>
 
-    <main class="page">
-      <section class="section">
-        <h1 class="page-title">Über uns</h1>
-        <p class="muted">Hier kommt später dein Text hin. Die Struktur ist bewusst minimal, damit wir Inhalte schnell ergänzen können.</p>
+    <main>
+      <!-- ca. 1 Bildschirmhöhe Platz für Text/Intro -->
+      <section class="about-hero">
+        <div class="section">
+          <h1 class="page-title">Über uns</h1>
+          <p class="muted">Hier ist Raum für deine Story, Mission und dein Value‑Prop. Du kannst diesen Bereich später mit Bild, USP‑Liste oder Kundenlogos füllen.</p>
+        </div>
+      </section>
+
+      <!-- Kontaktformular -->
+      <section class="contact-section" id="contact-form">
+        <div class="section">
+          <div class="form-card">
+            <form id="contactForm" novalidate>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="firstName">Vorname<span class="req">*</span></label>
+                  <input type="text" id="firstName" name="firstName" autocomplete="given-name" required />
+                </div>
+                <div class="form-field">
+                  <label for="lastName">Name<span class="req">*</span></label>
+                  <input type="text" id="lastName" name="lastName" autocomplete="family-name" required />
+                </div>
+                <div class="form-field">
+                  <label for="email">E‑Mail<span class="req">*</span></label>
+                  <input type="email" id="email" name="email" autocomplete="email" required />
+                </div>
+                <div class="form-field">
+                  <label for="website">Website</label>
+                  <input type="url" id="website" name="website" placeholder="https://…" autocomplete="url" />
+                </div>
+                <div class="form-field form-wide">
+                  <label for="message">Text</label>
+                  <textarea id="message" name="message" rows="6" placeholder="Wie kann ich helfen?"></textarea>
+                </div>
+
+                <div class="form-foot-left">
+                  <small class="muted">*Pflichtfeld</small>
+                </div>
+                <div class="form-foot-right">
+                  <button type="submit" class="btn submit-btn">Kontaktieren</button>
+                </div>
+              </div>
+              <p class="form-error" role="alert" aria-live="polite" hidden>Bitte fülle alle Pflichtfelder korrekt aus.</p>
+            </form>
+          </div>
+        </div>
       </section>
     </main>
 
