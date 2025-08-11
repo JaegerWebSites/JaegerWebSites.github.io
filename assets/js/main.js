@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pauseAll = () => { stopRotation(); panels.forEach(p => p._demoStop && p._demoStop()); };
   const resumeAll = () => { if (!prefersReduced) { startRotation(); panels.forEach(p => p._demoStart && p._demoStart()); } };
 
-  const ROTATE_INTERVAL_MS = 3500; // langsamer
+  const ROTATE_INTERVAL_MS = 2500; // langsamer
   const PANEL_TRANS_MS = 800; // muss zur CSS transition passen
 
   const beginRotation = () => {
@@ -94,11 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const endRotation = () => {
     rotating = false;
     carousel.classList.remove('is-rotating');
-    if (!prefersReduced) {
-      panels.forEach(p => p._demoStart && p._demoStart());
-    } else {
-      panels.forEach(p => p._demoStep && p._demoStep());
-    }
+    const recalc = () => {
+      panels.forEach(p => {
+        if (prefersReduced) {
+          p._demoStep && p._demoStep();
+        } else {
+          p._demoStart && p._demoStart();
+        }
+      });
+    };
+    // kurz warten bis die CSS-Transition fertig ist, dann neu berechnen
+    requestAnimationFrame(() => requestAnimationFrame(recalc));
   };
 
   const rotateOnce = () => {
@@ -124,10 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pos = (el) => {
       if (!u || !list || !el) return;
-      const r = el.getBoundingClientRect();
-      const pr = list.getBoundingClientRect();
-      u.style.width = `${r.width}px`;
-      u.style.transform = `translateX(${r.left - pr.left}px)`;
+      // Nutze Offsets innerhalb der UL (stabiler als viewport-Rects bei 3D-Transforms)
+      const left = el.offsetLeft - list.offsetLeft;
+      const width = el.offsetWidth;
+      u.style.width = `${width}px`;
+      u.style.transform = `translateX(${left}px)`;
     };
     const step = () => {
       const el = items.length ? items[j % items.length] : null;
@@ -135,7 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (el) { el.classList.add('hover'); pos(el); }
       j++;
     };
-    const start = () => { stop(); step(); timer = setInterval(step, speedMs); };
+    const start = () => {
+      stop();
+      step();
+      // Doppelte RAF, damit Layout & 3D-Transform stehen
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const current = items.length ? items[(j - 1 + items.length) % items.length] : null;
+        if (current) pos(current);
+      }));
+      timer = setInterval(step, speedMs);
+    };
     const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
 
     // Exponiere Steuerung am Panel
