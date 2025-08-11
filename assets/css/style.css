@@ -214,6 +214,7 @@ main { min-height: 100svh; }
     0 28px 70px rgba(0,0,0,.55),
     0 0 0 1px rgba(255,255,255,.08) inset,
     0 0 40px rgba(255,255,255,.06);
+  cursor: pointer; /* klickbar für Scroll-to-Plan */
 }
 
 .demo-chrome { height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 12px; background: rgba(255,255,255,.03); border-bottom: 1px solid var(--line); }
@@ -263,12 +264,19 @@ main { min-height: 100svh; }
 
 /* ===== Plans unter dem Carousel ===== */
 .plans { max-width: 1200px; margin: 40px auto 80px; display: grid; gap: 22px; padding: 0 20px; }
-.plan { display: grid; grid-template-columns: min(44vw, 520px) 1fr; gap: 24px; align-items: center; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); }
-.plan-media .demo-window { border-width: 1px; box-shadow: 0 16px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03); }
-.plan-copy h2 { margin: 0 0 8px; font-size: clamp(20px, 3vw, 28px); }
-.plan-copy p { margin: 0 0 14px; }
-.price { font-size: clamp(22px, 3.2vw, 28px); font-weight: 800; margin-bottom: 4px; }
-.note { color: var(--muted); }
+.plan { display: grid; grid-template-columns: min(44vw, 520px) 1fr; gap: 24px; align-items: center; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); scroll-margin-top: 96px; position: relative; }
+/* heller Trenner zwischen den Plans */
+.plan + .plan::before { content: ""; position: absolute; left: 18px; right: 18px; top: -12px; height: 1px; background: rgba(255,255,255,.28); }
+
+.plan-media .demo-window { border-width: 1px; box-shadow: 0 16px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03); cursor: default; }
+
+.plan-copy { display: grid; grid-template-columns: 1fr auto; grid-auto-rows: auto; gap: 10px 16px; align-items: start; }
+.plan-copy h2 { margin: 0 0 8px; font-size: clamp(20px, 3vw, 28px); grid-column: 1 / -1; }
+.plan-copy p { margin: 0 0 14px; grid-column: 1 / -1; }
+.price { font-size: clamp(22px, 3.2vw, 28px); font-weight: 800; margin-bottom: 4px; grid-column: 2; justify-self: end; }
+.price::after { content: " *"; font-weight: 800; }
+.contact-btn { grid-column: 1 / -1; width: fit-content; }
+.note { color: var(--muted); grid-column: 1 / -1; }
 
 @media (max-width: 1200px) {
   :root { --spread: clamp(28vw, 36vw, 48vw); }
@@ -279,6 +287,7 @@ main { min-height: 100svh; }
   .panel.is-left, .panel.is-right { transform: translate(-50%, -50%) translateZ(-6vmin) scale(.92); }
   .plans { gap: 16px; }
   .plan { grid-template-columns: 1fr; }
+  .price { grid-column: 1; justify-self: end; }
 }
 
 @media (prefers-reduced-motion: reduce) {
