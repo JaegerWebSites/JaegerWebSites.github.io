@@ -72,12 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // A + A2: klassische Top-Navigation
     if (type.startsWith('a')) {
       const dnav = root.querySelector('.demo-nav');
-      const list = dnav ? dnav.querySelector('ul') : null;
+      const listEl = dnav ? dnav.querySelector('ul') : null;
       const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
       const u = dnav ? dnav.querySelector('.demo-underline') : null;
       const pos = (el) => {
         if (!u || !list || !el) return;
-        const left = el.offsetLeft - list.offsetLeft;
+        const left = el.offsetLeft - listEl.offsetLeft;
         u.style.width = `${el.offsetWidth}px`;
         u.style.transform = `translateX(${left}px)`;
       };
@@ -96,12 +96,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (type.startsWith('b')) {
       const panel = root.querySelector('.side-panel');
       const dnav = root.querySelector('.side-nav');
-      const list = dnav ? dnav.querySelector('ul') : null;
+      const listEl = dnav ? dnav.querySelector('ul') : null;
       const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
       const hl = root.querySelector('.side-highlight');
       const pos = (el) => {
         if (!panel || !dnav || !list || !hl || !el) return;
-        const top = el.offsetTop - list.offsetTop + 4; // 4px Padding-Korrektur
+        const top = el.offsetTop - listEl.offsetTop + 4; // 4px Padding-Korrektur
         hl.style.transform = `translateY(${top}px)`;
         hl.style.height = `${el.offsetHeight}px`;
       };
