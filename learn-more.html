@@ -29,7 +29,7 @@
       <!-- Learn More: 3D-Carousel mit drei "Videos" (Simulation) -->
       <section class="learn-hero">
         <div class="carousel" data-carousel>
-          <!-- Panel A (zentral startend) -->
+          <!-- Panel A: klassische Top-Navigation mit Underline -->
           <figure class="panel is-front" data-demo="a">
             <div class="demo-window">
               <div class="demo-chrome">
@@ -57,52 +57,57 @@
             <figcaption class="caption"><a class="caption-link" href="#">Erfahre mehr</a></figcaption>
           </figure>
 
-          <!-- Panel B (rechts startend) -->
+          <!-- Panel B: Hamburger links oben → Seitenleiste mit vertikalen Reitern -->
           <figure class="panel is-right" data-demo="b">
             <div class="demo-window">
               <div class="demo-chrome">
                 <span class="dot red"></span>
                 <span class="dot yellow"></span>
                 <span class="dot green"></span>
-                <div class="demo-url">jaeger-websites.dev/portfolio</div>
+                <div class="demo-url">jaeger-websites.dev/menu</div>
               </div>
               <div class="demo-canvas">
-                <nav class="demo-nav">
-                  <ul>
-                    <li><span>Portfolio</span></li>
-                    <li><span>Leistungen</span></li>
-                    <li><span>Kontakt</span></li>
-                    <li><span>Blog</span></li>
-                  </ul>
-                  <div class="demo-underline" aria-hidden="true"></div>
-                </nav>
+                <button class="hamburger" aria-label="Menü">
+                  <span></span><span></span><span></span>
+                </button>
+                <aside class="side-panel" aria-hidden="true">
+                  <nav class="side-nav">
+                    <ul>
+                      <li><span>Home</span></li>
+                      <li><span>Projekte</span></li>
+                      <li><span>Services</span></li>
+                      <li><span>Kontakt</span></li>
+                    </ul>
+                    <div class="side-highlight" aria-hidden="true"></div>
+                  </nav>
+                </aside>
                 <div class="demo-content">
                   <div class="placeholder-card"></div>
-                  <div class="placeholder-card thin"></div>
                   <div class="placeholder-card"></div>
+                  <div class="placeholder-card thin"></div>
                 </div>
               </div>
             </div>
             <figcaption class="caption"><a class="caption-link" href="#">Erfahre mehr</a></figcaption>
           </figure>
 
-          <!-- Panel C (links startend) -->
+          <!-- Panel C: Pill-Navigation mit gleitendem Indikator -->
           <figure class="panel is-left" data-demo="c">
             <div class="demo-window">
               <div class="demo-chrome">
                 <span class="dot red"></span>
                 <span class="dot yellow"></span>
                 <span class="dot green"></span>
-                <div class="demo-url">jaeger-websites.dev/studio</div>
+                <div class="demo-url">jaeger-websites.dev/pills</div>
               </div>
               <div class="demo-canvas">
-                <nav class="demo-nav">
-                  <ul>
-                    <li><span>Start</span></li>
-                    <li><span>Work</span></li>
-                    <li><span>Team</span></li>
-                  </ul>
-                  <div class="demo-underline" aria-hidden="true"></div>
+                <nav class="pill-nav">
+                  <div class="pills">
+                    <span class="pill">UI</span>
+                    <span class="pill">Code</span>
+                    <span class="pill">Deploy</span>
+                    <div class="pill-indicator" aria-hidden="true"></div>
+                  </div>
                 </nav>
                 <div class="demo-content">
                   <div class="placeholder-card"></div>
@@ -118,6 +123,112 @@
         <!-- dekorative Elemente wie auf der Startseite -->
         <div class="glow glow-a" aria-hidden="true"></div>
         <div class="glow glow-b" aria-hidden="true"></div>
+      </section>
+
+      <!-- Pläne/Abschnitte unter dem Carousel: jeweils Video links, Text + Preis rechts -->
+      <section class="plans">
+        <!-- Plan 1: Top-Navigation -->
+        <article class="plan" data-demo="a2">
+          <div class="plan-media">
+            <div class="demo-window">
+              <div class="demo-chrome">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <div class="demo-url">jaeger-websites.dev/ui</div>
+              </div>
+              <div class="demo-canvas">
+                <nav class="demo-nav">
+                  <ul>
+                    <li><span>Design</span></li>
+                    <li><span>Build</span></li>
+                    <li><span>Launch</span></li>
+                  </ul>
+                  <div class="demo-underline" aria-hidden="true"></div>
+                </nav>
+                <div class="demo-content">
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card thin"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="plan-copy">
+            <h2>Klare Top-Navigation</h2>
+            <p class="muted">Minimalistische Leiste mit präzisem Hover-Indikator – schnell, verständlich, vertraut.</p>
+            <div class="price">500€</div>
+            <small class="note">Anpassungen gegen Aufpreis</small>
+          </div>
+        </article>
+
+        <!-- Plan 2: Hamburger + Seitenmenü -->
+        <article class="plan" data-demo="b2">
+          <div class="plan-media">
+            <div class="demo-window">
+              <div class="demo-chrome">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <div class="demo-url">jaeger-websites.dev/menu</div>
+              </div>
+              <div class="demo-canvas">
+                <button class="hamburger" aria-label="Menü"><span></span><span></span><span></span></button>
+                <aside class="side-panel" aria-hidden="true">
+                  <nav class="side-nav">
+                    <ul>
+                      <li><span>Home</span></li>
+                      <li><span>Projekte</span></li>
+                      <li><span>Services</span></li>
+                      <li><span>Kontakt</span></li>
+                    </ul>
+                    <div class="side-highlight" aria-hidden="true"></div>
+                  </nav>
+                </aside>
+                <div class="demo-content">
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card thin"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="plan-copy">
+            <h2>Seitenmenü für Fokus</h2>
+            <p class="muted">Hamburger-Icon öffnet eine fokussierte, vertikale Navigation – perfekt für viele Reiter.</p>
+            <div class="price">500€</div>
+            <small class="note">Anpassungen gegen Aufpreis</small>
+          </div>
+        </article>
+
+        <!-- Plan 3: Pill-Navigation -->
+        <article class="plan" data-demo="c2">
+          <div class="plan-media">
+            <div class="demo-window">
+              <div class="demo-chrome">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <div class="demo-url">jaeger-websites.dev/pills</div>
+              </div>
+              <div class="demo-canvas">
+                <nav class="pill-nav">
+                  <div class="pills">
+                    <span class="pill">UI</span>
+                    <span class="pill">Code</span>
+                    <span class="pill">Deploy</span>
+                    <div class="pill-indicator" aria-hidden="true"></div>
+                  </div>
+                </nav>
+                <div class="demo-content">
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card"></div>
+                  <div class="placeholder-card thin"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="plan-copy">
+            <h2>Tabs als "Pills"</h2>
+            <p class="muted">Weiche, kapselartige Tabs mit gleitendem Indikator – modern & touchfreundlich.</p>
+            <div class="price">500€</div>
+            <small class="note">Anpassungen gegen Aufpreis</small>
+          </div>
+        </article>
       </section>
     </main>
 
