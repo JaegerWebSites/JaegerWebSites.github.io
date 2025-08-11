@@ -17,7 +17,7 @@
   /* Panelgröße & Spreizung (≈ 1/3 Screen, weiter auseinandergeschoben) */
   --panel-w: clamp(360px, 33.33vw, 860px);
   --panel-h: clamp(300px, 33.33vh, 720px);
-  --spread: clamp(32vw, 42vw, 52vw); /* Abstand der äußeren Panels zur Mitte */
+  --spread: clamp(40vw, 48vw, 58vw); /* noch mehr Abstand */
 }
 
 * { box-sizing: border-box; }
@@ -197,10 +197,10 @@ main { min-height: 100svh; }
   filter: saturate(.92) brightness(.95);
   transition: transform .8s var(--ease), filter .8s var(--ease), opacity .6s var(--ease);
 }
-.panel.is-front { transform: translate(-50%, -50%) translateZ(12vmin) rotateY(0deg) scale(1); z-index: 3; filter: none; }
+.panel.is-front { transform: translate(-50%, -50%) translateZ(16vmin) rotateY(0deg) scale(1); z-index: 3; filter: none; }
 /* Äußere Panels: in die GEGENrichtung kippen und weiter auseinanderrücken */
-.panel.is-left  { transform: translate(-50%, -50%) rotateY(-32deg) translateX(calc(-1 * var(--spread))) translateZ(-10vmin) scale(.93); z-index: 2; }
-.panel.is-right { transform: translate(-50%, -50%) rotateY(32deg)  translateX(var(--spread)) translateZ(-10vmin)  scale(.93); z-index: 2; }
+.panel.is-left  { transform: translate(-50%, -50%) rotateY(-28deg) translateX(calc(-1 * var(--spread))) translateZ(-14vmin) scale(.93); z-index: 2; }
+.panel.is-right { transform: translate(-50%, -50%) rotateY(28deg)  translateX(calc(var(--spread) + 2vw)) translateZ(-14vmin)  scale(.93); z-index: 2; }
 .panel:hover { filter: brightness(1.06) saturate(1.05); }
 
 /* Demo-Fenster füllt das Panel, stärker abgehoben */
@@ -225,10 +225,10 @@ main { min-height: 100svh; }
 
 .demo-canvas { position: relative; height: calc(100% - 40px); padding: 18px; display: grid; grid-template-rows: auto 1fr; }
 .demo-nav { position: relative; }
-.demo-nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 18px; align-items: center; }
+.demo-nav ul { position: relative; list-style: none; margin: 0; padding: 0; display: flex; gap: 18px; align-items: center; }
 .demo-nav li span { display: inline-block; padding: 8px 0; color: var(--accent); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: .8rem; transition: color .25s var(--ease); }
 .demo-nav li span.hover { color: var(--text); }
-.demo-underline { position: absolute; left: 0; bottom: -2px; height: 2px; width: 0; background: var(--text); border-radius: 2px; opacity: .9; transition: transform .4s var(--ease), width .4s var(--ease); }
+.demo-underline { position: absolute; left: 0; bottom: -2px; height: 2px; width: 0; background: var(--text); border-radius: 2px; opacity: .9; transition: transform .4s var(--ease), width .4s var(--ease); will-change: transform, width; }
 
 /* Während der Rotation Unterstriche ausblenden & Transition deaktivieren */
 .carousel.is-rotating .demo-underline { opacity: 0 !important; transition: none !important; }
@@ -243,7 +243,7 @@ main { min-height: 100svh; }
 .panel:hover .caption-link { border-bottom-color: var(--text); }
 
 @media (max-width: 1200px) {
-  :root { --spread: clamp(24vw, 34vw, 42vw); }
+  :root { --spread: clamp(28vw, 36vw, 48vw); }
 }
 @media (max-width: 900px) {
   .carousel { width: min(96vw, 720px); height: calc(var(--panel-h) + 84px); }
