@@ -102,9 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const hamburger = root.querySelector('.hamburger');
   const bars = hamburger ? Array.from(hamburger.querySelectorAll('span')) : [];
 
-  // Demo-Highlight (nur Hintergrund-Highlight, nicht die animierten Bars)
+  // Optionales Demo-Highlight (hat nichts mit den Balken zu tun)
   const pos = (el) => {
-    if (!panel || !dnav || !listEl || !hl || !el) return;
+    if (!listEl || !hl || !el) return;
     const top = el.offsetTop - listEl.offsetTop + 4;
     hl.style.transform = `translateY(${top}px)`;
     hl.style.height = `${el.offsetHeight}px`;
@@ -114,37 +114,50 @@ document.addEventListener('DOMContentLoaded', () => {
   function measureBars() {
     if (!hamburger || bars.length < 3 || items.length < 3) return;
     const hb = hamburger.getBoundingClientRect();
-    const barOffsetsY = bars.map(b => Math.round(b.getBoundingClientRect().top - hb.top));
-    items.slice(0,3).forEach((s, i) => {
+    // Y-Offset jedes Balkens relativ zum Hamburger-Container
+    const barTop = bars.map(b => Math.round(b.getBoundingClientRect().top - hb.top));
+    // erste 3 Einträge: Home, Learn more, About us
+    items.slice(0, 3).forEach((s, i) => {
       const r = s.getBoundingClientRect();
-      const x = Math.round(r.left - hb.left);                        // links bündig zum Wort
-      const y = Math.round((r.bottom - 1) - hb.top - barOffsetsY[i]); // knapp unter Text (-1px)
-      const w = Math.round(r.width);                                  // Wortbreite
-      root.style.setProperty(`--b${i+1}x`, `${x}px`);
-      root.style.setProperty(`--b${i+1}y`, `${y}px`);
-      root.style.setProperty(`--b${i+1}w`, `${w}px`);
+      const x = Math.round(r.left - hb.left);                       // links bündig am Wort
+      const y = Math.round((r.bottom - 1) - hb.top - barTop[i]);    // knapp unter Text (-1px)
+      const w = Math.round(r.width);                                // Wortbreite
+      root.style.setProperty(`--b${i + 1}x`, `${x}px`);
+      root.style.setProperty(`--b${i + 1}y`, `${y}px`);
+      root.style.setProperty(`--b${i + 1}w`, `${w}px`);
     });
   }
 
   let timer = null, j = 0;
   const step = () => {
-    if (panel) panel.classList.add('open'); // Panel „auf“
+    // Text-Hover-Demo + messen
     const el = items.length ? items[j % items.length] : null;
     items.forEach(s => s.classList.remove('hover'));
     if (el) { el.classList.add('hover'); pos(el); }
     j++;
-    // Nach jedem Schritt messen (doppelte rAF, damit Layout final ist)
+    // zweimal messen (doppelte rAF) – wartet Reflow ab
     requestAnimationFrame(() => requestAnimationFrame(measureBars));
   };
 
   const start = () => {
     stop();
     step();
-    timer = setInterval(step, Math.max(1400, speedMs));
+    timer = setInterval(step, Math.max(1400, speedMs)); // Demo-Takt
   };
-  const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
+  const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
 
-  // Auch bei Resize neu messen
+  // Bei jedem Panel-Animationszyklus kurz nach Öffnung neu messen
+  if (panel) {
+    panel.addEventListener('animationstart', () => {
+      setTimeout(measureBars, 280);
+      setTimeout(measureBars, 520);
+    });
+    panel.addEventListener('animationiteration', () => {
+      setTimeout(measureBars, 280);
+      setTimeout(measureBars, 520);
+    });
+  }
+  // Bei Resize neu messen
   window.addEventListener('resize', () => {
     requestAnimationFrame(() => requestAnimationFrame(measureBars));
   });
