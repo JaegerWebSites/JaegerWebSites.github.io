@@ -1,8 +1,8 @@
 /*
   Navigation: aktiver Link + animierter Underline-Indicator
-  Mobile-MenÃ¼: Toggle
+  Mobile-Menü: Toggle
   Kleinigkeiten: dynamisches Jahr
-  + Learn-More: 3D-Carousel mit drei Demo-â€žVideosâ€œ (Simulation)
+  + Learn-More: 3D-Carousel mit drei Demo-„Videos“ (Simulation)
   + About: Kontaktformular-Validierung & Anker-Scroll
 */
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const carousel = document.querySelector('[data-carousel]');
   const panelEls = carousel ? Array.from(carousel.querySelectorAll('.panel')) : [];
 
-  // Helfer fÃ¼r Demo-Animationen (A, B, C) â€“ wiederverwendbar fÃ¼r Panels und PlÃ¤ne
+  // Helfer für Demo-Animationen (A, B, C) – wiederverwendbar für Panels und Pläne
   const attachDemo = (root, speedMs = 1600) => {
     const type = (root.dataset.demo || '').toLowerCase();
     let timer = null; let j = 0;
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       root._demoStart = start; root._demoStop = stop; root._demoStep = step; return {start, stop, step};
     }
 
-    // B + B2: Hamburger â†’ Seitenpanel
+    // B + B2: Hamburger → Seitenpanel
     if (type.startsWith('b')) {
       const panel = root.querySelector('.side-panel');
   const dnav = root.querySelector('.side-nav');
@@ -116,10 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const hb = hamburger.getBoundingClientRect();
     // Y-Offset jedes Balkens relativ zum Hamburger-Container
     const barTop = bars.map(b => Math.round(b.getBoundingClientRect().top - hb.top));
-    // erste 3 EintrÃ¤ge: Home, Learn more, About us
+    // erste 3 Einträge: Home, Learn more, About us
     items.slice(0, 3).forEach((s, i) => {
       const r = s.getBoundingClientRect();
-      const x = Math.round(r.left - hb.left);                       // links bÃ¼ndig am Wort
+      const x = Math.round(r.left - hb.left);                       // links bündig am Wort
       const y = Math.round((r.bottom - 1) - hb.top - barTop[i]);    // knapp unter Text (-1px)
       const w = Math.round(r.width);                                // Wortbreite
       root.style.setProperty(`--b${i + 1}x`, `${x}px`);
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     items.forEach(s => s.classList.remove('hover'));
     if (el) { el.classList.add('hover'); pos(el); }
     j++;
-    // zweimal messen (doppelte rAF) â€“ wartet Reflow ab
+    // zweimal messen (doppelte rAF) – wartet Reflow ab
     requestAnimationFrame(() => requestAnimationFrame(measureBars));
   };
 
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
 
-  // Bei jedem Panel-Animationszyklus kurz nach Ã–ffnung neu messen
+  // Bei jedem Panel-Animationszyklus kurz nach Öffnung neu messen
   if (panel) {
     panel.addEventListener('animationstart', () => {
       setTimeout(measureBars, 280);
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return null;
   };
 
-  // Demos an Carousel-Panels anhÃ¤ngen
+  // Demos an Carousel-Panels anhängen
   const panelDemos = panelEls.map((p, i) => attachDemo(p, i === 0 ? 1500 : i === 1 ? 1300 : 1700)).filter(Boolean);
 
   // Carousel-Rotation
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     panelDemos.forEach(d => d.start());
     startRotation();
 
-    // Klick auf Panel-Fenster oder Caption â†’ zum jeweiligen Plan scrollen
+    // Klick auf Panel-Fenster oder Caption → zum jeweiligen Plan scrollen
     const map = { a: '#plan-a', b: '#plan-b', c: '#plan-c' };
     panelEls.forEach(p => {
       const type = (p.dataset.demo || '').toLowerCase();
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const planEls = Array.from(document.querySelectorAll('.plan'));
   const planDemos = planEls.map((el, i) => attachDemo(el, i === 1 ? 1400 : 1600)).filter(Boolean);
 
-  // ===== About: wenn mit Hash geladen â†’ zum Formular scrollen, dann Fokus setzen
+  // ===== About: wenn mit Hash geladen → zum Formular scrollen, dann Fokus setzen
   const contactSection = document.getElementById('contact-form');
   if (getFile(window.location.pathname) === 'about.html' && window.location.hash === '#contact-form' && contactSection) {
     setTimeout(() => {
@@ -291,9 +291,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Mailto-Fallback â€“ Ã¶ffnet Standard-Mailprogramm mit vorgefÃ¼lltem Text
+      // Mailto-Fallback – öffnet Standard-Mailprogramm mit vorgefülltem Text
       const to = 'benedikt.jaeger.bjj@gmail.com';
-      const subject = 'Kontaktanfrage JÃ¤ger WebSites';
+      const subject = 'Kontaktanfrage Jäger WebSites';
       const body = [
         `Name: ${fields.lastName.value.trim()}`,
         `Vorname: ${fields.firstName.value.trim()}`,
@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
       a.remove();
     });
 
-    // Live-Fehler zurÃ¼cknehmen, sobald Nutzer tippt / Fokus verliert
+    // Live-Fehler zurücknehmen, sobald Nutzer tippt / Fokus verliert
     ['firstName','lastName','email'].forEach(key => {
       const f = fields[key];
       if (!f) return;
