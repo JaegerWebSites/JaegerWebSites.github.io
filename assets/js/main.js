@@ -93,8 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // B + B2: Hamburger → Seitenpanel
-    if (type.startsWith('b')) {
-      const panel = root.querySelector('.side-panel');
+if (type.startsWith('b')) {
+  const panel = root.querySelector('.side-panel');
   const dnav = root.querySelector('.side-nav');
   const listEl = dnav ? dnav.querySelector('ul') : null;
   const items = dnav ? Array.from(dnav.querySelectorAll('li span')) : [];
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const hamburger = root.querySelector('.hamburger');
   const bars = hamburger ? Array.from(hamburger.querySelectorAll('span')) : [];
 
-  // Optionales Demo-Highlight (hat nichts mit den Balken zu tun)
+  // Demo-Highlight (optional)
   const pos = (el) => {
     if (!listEl || !hl || !el) return;
     const top = el.offsetTop - listEl.offsetTop + 4;
@@ -110,18 +110,15 @@ document.addEventListener('DOMContentLoaded', () => {
     hl.style.height = `${el.offsetHeight}px`;
   };
 
-  // Bars exakt auf Wortbreite/-position ausrichten
+  // Bars exakt unter Wörter setzen
   function measureBars() {
     if (!hamburger || bars.length < 3 || items.length < 3) return;
     const hb = hamburger.getBoundingClientRect();
-    // Y-Offset jedes Balkens relativ zum Hamburger-Container
-    const barTop = bars.map(b => Math.round(b.getBoundingClientRect().top - hb.top));
-    // erste 3 Einträge: Home, Learn more, About us
     items.slice(0, 3).forEach((s, i) => {
       const r = s.getBoundingClientRect();
-      const x = Math.round(r.left - hb.left);                       // links bündig am Wort
-      const y = Math.round((r.bottom - 1) - hb.top - barTop[i]);    // knapp unter Text (-1px)
-      const w = Math.round(r.width);                                // Wortbreite
+      const x = Math.round(r.left - hb.left);
+      const y = Math.round((r.bottom + 2) - hb.top);
+      const w = Math.round(r.width);
       root.style.setProperty(`--b${i + 1}x`, `${x}px`);
       root.style.setProperty(`--b${i + 1}y`, `${y}px`);
       root.style.setProperty(`--b${i + 1}w`, `${w}px`);
@@ -130,41 +127,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let timer = null, j = 0;
   const step = () => {
-    // Text-Hover-Demo + messen
     const el = items.length ? items[j % items.length] : null;
     items.forEach(s => s.classList.remove('hover'));
     if (el) { el.classList.add('hover'); pos(el); }
     j++;
-    // zweimal messen (doppelte rAF) – wartet Reflow ab
     requestAnimationFrame(() => requestAnimationFrame(measureBars));
   };
 
   const start = () => {
     stop();
     step();
-    timer = setInterval(step, Math.max(1400, speedMs)); // Demo-Takt
+    timer = setInterval(step, Math.max(1400, speedMs));
   };
-  requestAnimationFrame(() => requestAnimationFrame(measureBars));
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
 
-  // Bei jedem Panel-Animationszyklus kurz nach Öffnung neu messen
   if (panel) {
     panel.addEventListener('animationstart', () => {
-      setTimeout(measureBars, 280);
-      setTimeout(measureBars, 520);
-    });
-    panel.addEventListener('animationiteration', () => {
-      setTimeout(measureBars, 280);
-      setTimeout(measureBars, 520);
+      setTimeout(measureBars, 300);
     });
   }
-  // Bei Resize neu messen
+
+  requestAnimationFrame(() => requestAnimationFrame(measureBars));
+
   window.addEventListener('resize', () => {
     requestAnimationFrame(() => requestAnimationFrame(measureBars));
   });
 
   root._demoStart = start; root._demoStop = stop; root._demoStep = step;
   return { start, stop, step };
+}
     }
 
     // C + C2: Pill-Navigation
@@ -249,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Demos in den Plans darunter =====
   const planEls = Array.from(document.querySelectorAll('.plan'));
   const planDemos = planEls.map((el, i) => attachDemo(el, i === 1 ? 1400 : 1600)).filter(Boolean);
-  planDemos.forEach(d => d.start());
 
   // ===== About: wenn mit Hash geladen → zum Formular scrollen, dann Fokus setzen
   const contactSection = document.getElementById('contact-form');
