@@ -160,7 +160,7 @@ if (type.startsWith('b')) {
   root._demoStart = start; root._demoStop = stop; root._demoStep = step;
   return { start, stop, step };
 }
-    }
+
 
     // C + C2: Pill-Navigation
     if (type.startsWith('c')) {
