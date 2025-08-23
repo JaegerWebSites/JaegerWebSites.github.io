@@ -144,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     step();
     timer = setInterval(step, Math.max(1400, speedMs)); // Demo-Takt
   };
+  requestAnimationFrame(() => requestAnimationFrame(measureBars));
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
 
   // Bei jedem Panel-Animationszyklus kurz nach Öffnung neu messen
