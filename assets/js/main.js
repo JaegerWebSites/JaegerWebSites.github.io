@@ -102,7 +102,7 @@ if (type.startsWith('b')) {
   const hamburger = root.querySelector('.hamburger');
   const bars = hamburger ? Array.from(hamburger.querySelectorAll('span')) : [];
 
-  // Demo-Highlight (optional)
+  // Optionales Highlight (nur Demo, nicht Bars)
   const pos = (el) => {
     if (!listEl || !hl || !el) return;
     const top = el.offsetTop - listEl.offsetTop + 4;
@@ -131,6 +131,7 @@ if (type.startsWith('b')) {
     items.forEach(s => s.classList.remove('hover'));
     if (el) { el.classList.add('hover'); pos(el); }
     j++;
+    // einmalig messen pro Step
     requestAnimationFrame(() => requestAnimationFrame(measureBars));
   };
 
@@ -141,14 +142,17 @@ if (type.startsWith('b')) {
   };
   const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
 
+  // Panel-Öffnung → einmal messen
   if (panel) {
     panel.addEventListener('animationstart', () => {
       setTimeout(measureBars, 300);
     });
   }
 
+  // Initial messen
   requestAnimationFrame(() => requestAnimationFrame(measureBars));
 
+  // Resize → neu messen
   window.addEventListener('resize', () => {
     requestAnimationFrame(() => requestAnimationFrame(measureBars));
   });
