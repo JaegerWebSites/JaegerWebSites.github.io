@@ -1,10 +1,10 @@
 /*
-  JÃ¤ger WebSites â€” FINAL CLEAN CSS (v3)
+  Jäger WebSites — FINAL CLEAN CSS (v3)
   - Header mit animierter Underline
   - Learn More: 3D-Carousel (A,B,C)
   - Burger-Demo (B): Panel LINKS (innerhalb des Fensters, per WIDTH-Animation),
     drei Balken wandern nach unten und werden zu wortbreiten Unterstreichungen
-    von "Home", "Learn more", "About us". Text blendet vor dem SchlieÃŸen aus.
+    von "Home", "Learn more", "About us". Text blendet vor dem Schließen aus.
   - About: Formular
 */
 
@@ -19,7 +19,7 @@
   --error: #ef4444;
   --ease: cubic-bezier(.215,.61,.355,1);
 
-  /* PanelgrÃ¶ÃŸe & Spreizung (â‰ˆ 1/3 Screen) */
+  /* Panelgröße & Spreizung (≈ 1/3 Screen) */
   --panel-w: clamp(360px, 33.33vw, 860px);
   --panel-h: clamp(300px, 33.33vh, 720px);
   --spread: clamp(40vw, 48vw, 58vw);
@@ -87,7 +87,7 @@ main{min-height:100svh}
 .glow-a{width:40vmax; height:40vmax; left:-10vmax; top:-8vmax; background:radial-gradient(circle at 30% 30%, #60a5fa, transparent 55%)}
 .glow-b{width:36vmax; height:36vmax; right:-8vmax; top:10vmax; background:radial-gradient(circle at 70% 50%, #34d399, transparent 55%)}
 
-/* ==== Learn More â€“ 3D Carousel ==== */
+/* ==== Learn More – 3D Carousel ==== */
 .learn-hero{min-height:100svh; padding-top:96px; display:grid; place-items:center; position:relative; overflow:clip; background:
   radial-gradient(60% 40% at 15% 10%, rgba(34,197,94,.18) 0, rgba(34,197,94,0) 60%),
   radial-gradient(55% 35% at 80% 20%, rgba(59,130,246,.18) 0, rgba(59,130,246,0) 65%),
@@ -124,16 +124,16 @@ main{min-height:100svh}
 .demo-nav li span.hover{color:var(--text)}
 .demo-underline{position:absolute; left:0; bottom:-2px; height:2px; width:0; background:var(--text); border-radius:2px; opacity:.9; transition:transform .4s var(--ease), width .4s var(--ease); will-change:transform,width}
 
-/* === BURGER DEMO (B) â€” FIX START === */
+/* === BURGER DEMO (B) — FIX START === */
 
-/* Keine statische Wort-Unterstreichung (stÃ¶rt die animierten Balken) */
+/* Keine statische Wort-Unterstreichung (stört die animierten Balken) */
 .side-nav li span::after { content: none !important; }
 
-/* Demo-Fenster kapseln, damit nichts auÃŸerhalb sichtbar ist */
+/* Demo-Fenster kapseln, damit nichts außerhalb sichtbar ist */
 .panel[data-demo="b"] .demo-window,
 .plan[data-demo="b2"] .demo-window { overflow: hidden; }
 
-/* Linkes Panel: im Fenster per WIDTH-Animation Ã¶ffnen/schlieÃŸen */
+/* Linkes Panel: im Fenster per WIDTH-Animation öffnen/schließen */
 .panel[data-demo="b"] .side-panel,
 .plan[data-demo="b2"] .side-panel {
   position: absolute; top: 0; bottom: 0; left: 0;
@@ -145,11 +145,11 @@ main{min-height:100svh}
 }
 @keyframes b-panel-width {
   0%,18%   { width: 0; }
-  28%,82%  { width: 240px; }   /* lÃ¤nger offen halten */
+  28%,82%  { width: 240px; }   /* länger offen halten */
   100%     { width: 0; }
 }
 
-/* Text in der Leiste blendet ein/aus â€“ verschwindet VOR dem SchlieÃŸen */
+/* Text in der Leiste blendet ein/aus – verschwindet VOR dem Schließen */
 .panel[data-demo="b"] .side-nav,
 .plan[data-demo="b2"] .side-nav {
   animation: b-panel-text 6s var(--ease) infinite both;
@@ -157,7 +157,7 @@ main{min-height:100svh}
 @keyframes b-panel-text {
   0%,18%   { opacity: 0; transform: translateX(-6px); }
   30%,76%  { opacity: 1; transform: translateX(0); }
-  78%,100% { opacity: 0; transform: translateX(-6px); } /* frÃ¼her weg als Panel */
+  78%,100% { opacity: 0; transform: translateX(-6px); } /* früher weg als Panel */
 }
 
 /* Wort-Look */
@@ -167,7 +167,7 @@ main{min-height:100svh}
 .side-nav li span { position: relative; display: inline-block; padding: 6px 0 4px 0; color: var(--accent); font-weight: 600; font-size: .86rem; }
 .side-nav li span.hover { color: var(--text); }
 
-/* Hamburger-Balken bekommen Animation â€“ Zielpositionen/ -breiten kommen per JS-Variablen */
+/* Hamburger-Balken bekommen Animation – Zielpositionen/ -breiten kommen per JS-Variablen */
 .panel[data-demo="b"] .hamburger span:nth-child(1),
 .plan[data-demo="b2"] .hamburger span:nth-child(1) { animation: b-bar1 6s var(--ease) infinite both; }
 .panel[data-demo="b"] .hamburger span:nth-child(2),
@@ -175,7 +175,7 @@ main{min-height:100svh}
 .panel[data-demo="b"] .hamburger span:nth-child(3),
 .plan[data-demo="b2"] .hamburger span:nth-child(3) { animation: b-bar3 6s var(--ease) infinite both; }
 
-/* Bars wandern exakt unter die WÃ¶rter â€“ per CSS-Variablen, die JS setzt */
+/* Bars wandern exakt unter die Wörter – per CSS-Variablen, die JS setzt */
 @keyframes b-bar1 {
   0%,18%   { transform: translate(0,0); width: 24px; opacity: 1; }
   28%,76%  { transform: translate(var(--b1x,12px), var(--b1y,32px)); width: var(--b1w,56px); opacity: 1; }
@@ -192,7 +192,7 @@ main{min-height:100svh}
   78%,100% { transform: translate(0,0); width: 24px; opacity: 0; }
 }
 
-/* === BURGER DEMO (B) â€” FIX END === */
+/* === BURGER DEMO (B) — FIX END === */
 
 /* ==== Demo C: Pill-Navigation ==== */
 .pill-nav{position:relative}
@@ -201,7 +201,7 @@ main{min-height:100svh}
 .pill.active{color:var(--text)}
 .pill-indicator{position:absolute; top:6px; left:6px; height:calc(100% - 12px); width:0; background:rgba(255,255,255,.1); border-radius:999px; transition:transform .35s var(--ease), width .35s var(--ease)}
 
-/* WÃ¤hrend der Rotation Unterstriche/Indikatoren ausblenden */
+/* Während der Rotation Unterstriche/Indikatoren ausblenden */
 .carousel.is-rotating .demo-underline,
 .carousel.is-rotating .pill-indicator{opacity:0 !important; transition:none !important}
 .carousel.is-rotating .panel{pointer-events:none}
@@ -221,7 +221,7 @@ main{min-height:100svh}
 .plan + .plan::before{content:""; position:absolute; left:12px; right:12px; top:-18px; height:2px; background:rgba(255,255,255,.4); filter:drop-shadow(0 1px 0 rgba(0,0,0,.25))}
 
 .plan-media .demo-window{border-width:1px; box-shadow:0 16px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03); cursor:default}
-/* Guard nur fÃ¼r Plan B: falls neben dem Video ein falsches Element landet â†’ ausblenden */
+/* Guard nur für Plan B: falls neben dem Video ein falsches Element landet → ausblenden */
 #plan-b .plan-media{overflow:hidden}
 #plan-b .plan-media > *:not(.demo-window){display:none !important}
 
