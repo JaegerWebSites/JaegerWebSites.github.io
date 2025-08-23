@@ -287,9 +287,9 @@ main{min-height:100svh}
   .btn{transition:none}
 }
 
-/* === Ergänzungen & Fixes für Burger-Demo === */
+/* === Fixes für Burger-Demo === */
 
-/* Hamburger ist rein visuelle Demo -> nicht klickbar */
+/* Hamburger (nur visuell, nicht klickbar) */
 .hamburger {
   position: absolute;
   top: 1rem;
@@ -309,29 +309,33 @@ main{min-height:100svh}
   width: 28px;
 }
 
-/* Sidepanel-Demo */
+/* Sidepanel */
 .side-panel {
   position: absolute;
   top: 0;
   left: 0;
   width: 0;
   height: 100%;
-  background: transparent; /* kein Kasten sichtbar im geschlossenen Zustand */
+  background: transparent; /* unsichtbar wenn geschlossen */
   overflow: hidden;
   transition: width 0.6s ease, background 0.3s ease;
   z-index: 10;
-  padding-top: 3rem;
+  padding-top: 2rem;
+  pointer-events: none; /* nicht klickbar wenn geschlossen */
 }
 .side-panel.open {
   width: 33%;
   min-width: 220px;
-  background: rgba(255,255,255,0.08); /* Hintergrund nur wenn offen */
+  background: rgba(255,255,255,0.08);
+  pointer-events: auto;
 }
+
+/* SideNav: 3 Reiter gleichmäßig in 2/3 Höhe */
 .side-panel .side-nav {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  height: 66%; /* 2/3 der Höhe */
+  justify-content: space-around;
+  height: 66%;
   margin: auto;
 }
 .side-panel .side-nav ul {
@@ -341,15 +345,16 @@ main{min-height:100svh}
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 .side-panel .side-nav li {
   padding: 0.5rem 1rem;
   color: #fff;
   position: relative;
+  text-align: left;
 }
 
-/* Bars wandern nach unten und passen sich in Breite/Position an */
+/* Hamburger-Linien als Unterstreichungen */
 .side-panel.open ~ .hamburger span:nth-child(1) {
   transform: translate(var(--b1x,0), var(--b1y,0));
   width: var(--b1w,28px);
