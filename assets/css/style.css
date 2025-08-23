@@ -1,104 +1,293 @@
-/* ===== Basis Reset & Typography (gekürzt für Fokus) ===== */
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: #111;
-  color: #fff;
+/*
+  Jäger WebSites — FINAL CLEAN CSS (v3)
+  - Header mit animierter Underline
+  - Learn More: 3D-Carousel (A,B,C)
+  - Burger-Demo (B): Panel LINKS (innerhalb des Fensters, per WIDTH-Animation),
+    drei Balken wandern nach unten und werden zu wortbreiten Unterstreichungen
+    von "Home", "Learn more", "About us". Text blendet vor dem Schließen aus.
+  - About: Formular
+*/
+
+:root {
+  --bg: #0a0d12;
+  --panel: rgba(12,16,22,.72);
+  --text: #e8eaed;
+  --muted: #9aa0a6;
+  --line: rgba(255,255,255,.12);
+  --accent: #d1d5db;
+  --focus: #9ae6b4;
+  --error: #ef4444;
+  --ease: cubic-bezier(.215,.61,.355,1);
+
+  /* Panelgröße & Spreizung (≈ 1/3 Screen) */
+  --panel-w: clamp(360px, 33.33vw, 860px);
+  --panel-h: clamp(300px, 33.33vh, 720px);
+  --spread: clamp(40vw, 48vw, 58vw);
 }
 
-/* Navigation */
-.nav {
-  position: relative;
-}
-.nav-underline {
-  position: absolute;
-  bottom: 0;
-  height: 2px;
-  background: #fff;
-  transition: transform 0.3s ease, width 0.3s ease;
-  opacity: 0;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--text); background:var(--bg);
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
+  letter-spacing:.01em;
 }
 
-/* ===== HERO ===== */
-.hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  position: relative;
+/* ==== Header & Navigation ==== */
+.site-header{position:fixed; inset:0 0 auto 0; height:64px; z-index:20;
+  backdrop-filter:saturate(160%) blur(12px); -webkit-backdrop-filter:saturate(160%) blur(12px);
+  background:color-mix(in oklab, var(--panel) 100%, transparent 0%);
+  border-bottom:1px solid var(--line);
 }
+.nav-inner{max-width:1200px; margin:0 auto; height:100%; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:16px; padding:0 20px}
+.brand{justify-self:start; font-weight:700; text-decoration:none; color:var(--text); letter-spacing:.03em}
+.brand span{opacity:.8; font-weight:600}
 
-/* ===== Carousel / Demos ===== */
-.carousel {
-  position: relative;
-  width: 100%;
-  height: 480px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1200px;
-}
+.nav-toggle{justify-self:end; width:44px; height:44px; display:none; place-items:center; border:1px solid var(--line); background:transparent; border-radius:12px; cursor:pointer}
+.nav-toggle .bar{display:block; width:18px; height:2px; background:var(--text); margin:3px 0; transition:transform .25s var(--ease)}
 
-.panel {
-  position: absolute;
-  width: 360px;
-  height: 280px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 12px;
+.nav{position:relative; justify-self:center}
+.nav ul{list-style:none; margin:0; padding:0; display:flex; gap:28px; align-items:center}
+.nav a{display:inline-block; text-decoration:none; color:var(--accent); font-weight:600; padding:8px 0; letter-spacing:.04em; text-transform:uppercase; font-size:.88rem}
+.nav a:focus-visible{outline:none; box-shadow:0 0 0 2px var(--focus); border-radius:6px}
+.nav a.active{color:var(--text)}
+
+.nav-underline{position:absolute; left:0; bottom:-2px; height:2px; width:0; background:currentColor; color:var(--text); border-radius:2px; opacity:0; transition:transform .35s var(--ease), width .35s var(--ease), opacity .2s}
+
+/* ==== Layout ==== */
+main{min-height:100svh}
+.page,.hero{padding-top:96px}
+.section{max-width:1200px; margin:0 auto; padding:40px 20px}
+.page-title{font-size:clamp(28px,4vw,42px); margin:0 0 12px}
+.muted{color:var(--muted)}
+
+/* ==== Hero (Startseite) ==== */
+.hero{min-height:100svh; display:grid; place-items:center; position:relative; overflow:clip; background:
+  radial-gradient(60% 40% at 20% 0%, rgba(56,189,248,.18) 0, rgba(56,189,248,0) 60%),
+  radial-gradient(50% 35% at 80% 15%, rgba(167,139,250,.18) 0, rgba(167,139,250,0) 65%),
+  linear-gradient(180deg,#0b0f14 0%, #0a0d12 100%)}
+.hero::after{content:""; position:absolute; inset:0; pointer-events:none; background-image:
+  linear-gradient(transparent 0 49px, rgba(255,255,255,.04) 50px),
+  linear-gradient(90deg, transparent 0 49px, rgba(255,255,255,.04) 50px);
+  background-size:50px 50px; opacity:.35; mask:radial-gradient(ellipse at center, #000 40%, transparent 85%)}
+.hero-content{text-align:center; padding:24px}
+.hero-title{font-size:clamp(40px,8vw,88px); margin:0 0 8px; letter-spacing:.02em}
+.hero-title span{opacity:.9}
+.hero-subtitle{font-size:clamp(16px,2.5vw,22px); color:var(--accent); margin:0 0 22px}
+
+.cta-row{display:inline-flex; gap:12px; align-items:center}
+.btn{appearance:none; border:1px solid var(--line); background:#fff; color:#000; font-weight:700; padding:12px 18px; border-radius:14px; text-decoration:none; transition:transform .2s var(--ease), box-shadow .2s var(--ease); cursor:pointer}
+.btn:hover{transform:translateY(-1px); box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:transparent; color:var(--text)}
+
+/* Dekor-Licht */
+.glow{position:absolute; filter:blur(36px); opacity:.35; mix-blend-mode:screen}
+.glow-a{width:40vmax; height:40vmax; left:-10vmax; top:-8vmax; background:radial-gradient(circle at 30% 30%, #60a5fa, transparent 55%)}
+.glow-b{width:36vmax; height:36vmax; right:-8vmax; top:10vmax; background:radial-gradient(circle at 70% 50%, #34d399, transparent 55%)}
+
+/* ==== Learn More – 3D Carousel ==== */
+.learn-hero{min-height:100svh; padding-top:96px; display:grid; place-items:center; position:relative; overflow:clip; background:
+  radial-gradient(60% 40% at 15% 10%, rgba(34,197,94,.18) 0, rgba(34,197,94,0) 60%),
+  radial-gradient(55% 35% at 80% 20%, rgba(59,130,246,.18) 0, rgba(59,130,246,0) 65%),
+  linear-gradient(180deg,#0b0f14 0%, #0a0d12 100%)}
+.learn-hero::after{content:""; position:absolute; inset:0; pointer-events:none; background-image:
+  linear-gradient(transparent 0 49px, rgba(255,255,255,.04) 50px),
+  linear-gradient(90deg, transparent 0 49px, rgba(255,255,255,.04) 50px);
+  background-size:50px 50px; opacity:.35; mask:radial-gradient(ellipse at center,#000 40%, transparent 85%)}
+
+.carousel{position:relative; width:min(100vw,1800px); height:calc(var(--panel-h) + 84px); perspective:1400px; transform-style:preserve-3d}
+.panel{position:absolute; left:50%; top:50%; width:var(--panel-w); height:var(--panel-h); transform:translate(-50%,-50%); display:grid; grid-template-rows:1fr auto; gap:10px; pointer-events:auto; cursor:default; filter:saturate(.92) brightness(.95); transition:transform .8s var(--ease), filter .8s var(--ease), opacity .6s var(--ease)}
+.panel.is-front{transform:translate(-50%,-50%) translateZ(16vmin) rotateY(0deg) scale(1); z-index:3; filter:none}
+.panel.is-left{ transform:translate(-50%,-50%) rotateY(-28deg) translateX(calc(-1 * var(--spread))) translateZ(-14vmin) scale(.93); z-index:2}
+.panel.is-right{transform:translate(-50%,-50%) rotateY(28deg) translateX(calc(var(--spread) + 2vw)) translateZ(-14vmin) scale(.93); z-index:2}
+.panel:hover{filter:brightness(1.06) saturate(1.05)}
+
+/* Demo-Fenster */
+.panel .demo-window, .plan .demo-window{position:relative; width:100%; height:100%; border-radius:18px; overflow:hidden; border:2px solid rgba(255,255,255,.35); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); box-shadow:0 28px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08) inset, 0 0 40px rgba(255,255,255,.06); cursor:default}
+
+.demo-chrome{height:40px; display:flex; align-items:center; gap:10px; padding:0 12px; background:rgba(255,255,255,.03); border-bottom:1px solid var(--line)}
+.dot{width:10px; height:10px; border-radius:50%; display:inline-block; opacity:.85}
+.dot.red{background:#ff5f57}
+.dot.yellow{background:#ffbd2e}
+.dot.green{background:#28c840}
+.demo-url{margin-left:6px; font-size:12px; color:var(--muted); letter-spacing:.02em}
+
+/* Demo-Canvas */
+.demo-canvas{position:relative; height:calc(100% - 40px); padding:18px; display:grid; grid-template-rows:auto 1fr}
+
+/* ==== Demo A: Top-Navigation ==== */
+.demo-nav{position:relative}
+.demo-nav ul{position:relative; list-style:none; margin:0; padding:0; display:flex; gap:18px; align-items:center}
+.demo-nav li span{display:inline-block; padding:8px 0; color:var(--accent); font-weight:600; letter-spacing:.04em; text-transform:uppercase; font-size:.8rem; transition:color .25s var(--ease)}
+.demo-nav li span.hover{color:var(--text)}
+.demo-underline{position:absolute; left:0; bottom:-2px; height:2px; width:0; background:var(--text); border-radius:2px; opacity:.9; transition:transform .4s var(--ease), width .4s var(--ease); will-change:transform,width}
+
+/* === BURGER DEMO (B) — FIX START === */
+
+/* Keine statische Wort-Unterstreichung (stört die animierten Balken) */
+.side-nav li span::after { content: none !important; }
+
+/* Demo-Fenster kapseln, damit nichts außerhalb sichtbar ist */
+.panel[data-demo="b"] .demo-window,
+.plan[data-demo="b2"] .demo-window { overflow: hidden; }
+
+/* Linkes Panel: im Fenster per WIDTH-Animation öffnen/schließen */
+.panel[data-demo="b"] .side-panel,
+.plan[data-demo="b2"] .side-panel {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  width: 0;
+  background: rgba(255,255,255,.06);
+  border-right: 1px solid var(--line);
   overflow: hidden;
-  transform: scale(0.8);
-  opacity: 0.5;
-  transition: transform 0.8s ease, opacity 0.8s ease;
+  animation: b-panel-width 6s var(--ease) infinite; /* Loop */
+}
+@keyframes b-panel-width {
+  0%,18%   { width: 0; }
+  28%,82%  { width: 240px; }   /* länger offen halten */
+  100%     { width: 0; }
 }
 
-.panel.is-front {
-  transform: translateX(0) scale(1);
-  opacity: 1;
-  z-index: 5;
+/* Text in der Leiste blendet ein/aus – verschwindet VOR dem Schließen */
+.panel[data-demo="b"] .side-nav,
+.plan[data-demo="b2"] .side-nav {
+  animation: b-panel-text 6s var(--ease) infinite both;
 }
-.panel.is-left {
-  transform: translateX(-420px) scale(0.8);
-  z-index: 1;
-}
-.panel.is-right {
-  transform: translateX(420px) scale(0.8);
-  z-index: 1;
+@keyframes b-panel-text {
+  0%,18%   { opacity: 0; transform: translateX(-6px); }
+  30%,76%  { opacity: 1; transform: translateX(0); }
+  78%,100% { opacity: 0; transform: translateX(-6px); } /* früher weg als Panel */
 }
 
-/* ===== Demo Chrome ===== */
-.demo-window {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+/* Wort-Look */
+.side-nav { position: relative; padding: 14px; }
+.side-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.side-nav li { position: relative; padding: 6px 8px 14px 8px; }
+.side-nav li span { position: relative; display: inline-block; padding: 6px 0 4px 0; color: var(--accent); font-weight: 600; font-size: .86rem; }
+.side-nav li span.hover { color: var(--text); }
+
+/* Hamburger-Balken bekommen Animation – Zielpositionen/ -breiten kommen per JS-Variablen */
+.panel[data-demo="b"] .hamburger span:nth-child(1),
+.plan[data-demo="b2"] .hamburger span:nth-child(1) { animation: b-bar1 6s var(--ease) infinite both; }
+.panel[data-demo="b"] .hamburger span:nth-child(2),
+.plan[data-demo="b2"] .hamburger span:nth-child(2) { animation: b-bar2 6s var(--ease) infinite both; }
+.panel[data-demo="b"] .hamburger span:nth-child(3),
+.plan[data-demo="b2"] .hamburger span:nth-child(3) { animation: b-bar3 6s var(--ease) infinite both; }
+
+/* Bars wandern exakt unter die Wörter – per CSS-Variablen, die JS setzt */
+@keyframes b-bar1 {
+  0%,18%   { transform: translate(0,0); width: 24px; opacity: 1; }
+  28%,76%  { transform: translate(var(--b1x,12px), var(--b1y,32px)); width: var(--b1w,56px); opacity: 1; }
+  78%,100% { transform: translate(0,0); width: 24px; opacity: 0; } /* oben ausblenden */
 }
-.demo-chrome {
-  display: flex;
-  align-items: center;
-  padding: 4px 8px;
-  background: rgba(255,255,255,0.08);
+@keyframes b-bar2 {
+  0%,18%   { transform: translate(0,0); width: 24px; opacity: 1; }
+  28%,76%  { transform: translate(var(--b2x,12px), var(--b2y,68px)); width: var(--b2w,110px); opacity: 1; }
+  78%,100% { transform: translate(0,0); width: 24px; opacity: 0; }
 }
-.demo-chrome .dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 4px;
-}
-.dot.red { background: #ff5f56; }
-.dot.yellow { background: #ffbd2e; }
-.dot.green { background: #27c93f; }
-.demo-url {
-  margin-left: auto;
-  font-size: 12px;
-  color: #aaa;
+@keyframes b-bar3 {
+  0%,18%   { transform: translate(0,0); width: 24px; opacity: 1; }
+  28%,76%  { transform: translate(var(--b3x,12px), var(--b3y,104px)); width: var(--b3w,92px); opacity: 1; }
+  78%,100% { transform: translate(0,0); width: 24px; opacity: 0; }
 }
 
-/* ===== Burger Demo ===== */
-.demo-canvas {
-  position: relative;
-  flex: 1;
+/* === BURGER DEMO (B) — FIX END === */
+
+/* ==== Demo C: Pill-Navigation ==== */
+.pill-nav{position:relative}
+.pills{position:relative; display:inline-flex; gap:8px; padding:6px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.02)}
+.pill{display:inline-block; padding:8px 14px; border-radius:999px; color:var(--accent); font-weight:600; font-size:.82rem}
+.pill.active{color:var(--text)}
+.pill-indicator{position:absolute; top:6px; left:6px; height:calc(100% - 12px); width:0; background:rgba(255,255,255,.1); border-radius:999px; transition:transform .35s var(--ease), width .35s var(--ease)}
+
+/* Während der Rotation Unterstriche/Indikatoren ausblenden */
+.carousel.is-rotating .demo-underline,
+.carousel.is-rotating .pill-indicator{opacity:0 !important; transition:none !important}
+.carousel.is-rotating .panel{pointer-events:none}
+
+/* Demo-Content Platzhalter */
+.demo-content{margin-top:12px; display:grid; gap:12px; grid-template-columns:1fr 1fr; align-content:start}
+.placeholder-card{border:1px solid var(--line); border-radius:14px; height:120px; background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))}
+.placeholder-card.thin{grid-column:1 / -1; height:56px}
+
+.caption{text-align:center; font-size:.9rem; color:var(--accent)}
+.caption-link{color:var(--text); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:2px}
+.panel:hover .caption-link{border-bottom-color:var(--text)}
+
+/* ==== Plans unter dem Carousel ==== */
+.plans{max-width:1200px; margin:48px auto 96px; display:grid; gap:32px; padding:0 20px}
+.plan{display:grid; grid-template-columns:min(44vw,520px) 1fr; gap:24px; align-items:stretch; padding:18px; border:1px solid var(--line); border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); position:relative; scroll-margin-top:96px}
+.plan + .plan::before{content:""; position:absolute; left:12px; right:12px; top:-18px; height:2px; background:rgba(255,255,255,.4); filter:drop-shadow(0 1px 0 rgba(0,0,0,.25))}
+
+.plan-media .demo-window{border-width:1px; box-shadow:0 16px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03); cursor:default}
+/* Guard nur für Plan B: falls neben dem Video ein falsches Element landet → ausblenden */
+#plan-b .plan-media{overflow:hidden}
+#plan-b .plan-media > *:not(.demo-window){display:none !important}
+
+.plan-copy{display:grid; grid-template-rows:auto auto 1fr auto; gap:10px 16px}
+.plan-copy h2{margin:0 0 8px; font-size:clamp(20px,3vw,28px)}
+.plan-copy p{margin:0 0 14px}
+.cta-col{justify-self:end; align-self:end; display:grid; gap:10px}
+.price{font-size:clamp(22px,3.2vw,28px); font-weight:800; margin:0; text-align:right}
+.price::after{content:" *"; font-weight:800}
+.contact-btn{width:fit-content; justify-self:end}
+.note{color:var(--muted)}
+.note::before{content:"* "}
+
+/* ==== About Hero & Kontaktformular ==== */
+.about-hero{padding-top:96px; background:
+  radial-gradient(50% 25% at 20% 15%, rgba(99,102,241,.18), transparent 60%),
+  radial-gradient(50% 25% at 80% 10%, rgba(16,185,129,.18), transparent 65%),
+  linear-gradient(180deg,#0b0f14 0%, #0a0d12 100%)}
+
+.contact-section{scroll-margin-top:96px}
+.form-card{border:2px solid rgba(255,255,255,.35); border-radius:16px; background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03)); backdrop-filter:blur(6px) saturate(120%); -webkit-backdrop-filter:blur(6px) saturate(120%); box-shadow:0 24px 64px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.06) inset}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; padding:18px}
+.form-field{display:grid; gap:6px}
+.form-field label{font-weight:700; font-size:.95rem}
+.req{color:var(--text); opacity:.8; margin-left:4px}
+.form-field input,.form-field textarea{appearance:none; width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:rgba(255,255,255,.02); color:var(--text); font:inherit}
+.form-field input:focus,.form-field textarea:focus{outline:none; border-color:rgba(255,255,255,.35); box-shadow:0 0 0 2px rgba(255,255,255,.1)}
+.form-wide{grid-column:1 / -1}
+.form-error{color:var(--text); background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.35); padding:10px 12px; border-radius:10px; margin:8px 18px 16px}
+.invalid{border-color:var(--error) !important; box-shadow:0 0 0 2px rgba(239,68,68,.25)}
+.form-foot-left{grid-column:1; display:flex; align-items:end}
+.form-foot-right{grid-column:2; display:flex; justify-content:end}
+.submit-btn{background:#fff; color:#000; font-weight:800; cursor:pointer}
+
+/* ==== Footer ==== */
+.site-footer{max-width:1200px; margin:0 auto; padding:24px 20px 40px; border-top:1px solid var(--line); color:var(--muted)}
+
+/* ==== Mobile ==== */
+@media (max-width:1200px){:root{--spread:clamp(28vw,36vw,48vw)}}
+@media (max-width:900px){
+  .nav-inner{grid-template-columns:auto 1fr auto}
+  .nav-toggle{display:grid}
+  .nav{position:fixed; inset:64px 0 0 0; background:var(--panel); border-top:1px solid var(--line); transform:translateY(-100%); transition:transform .35s var(--ease)}
+  .site-header.open .nav{transform:translateY(0)}
+  .nav ul{flex-direction:column; gap:18px; padding:24px; align-items:center}
+  .nav-underline{display:none}
+  .carousel{width:min(96vw,720px); height:calc(var(--panel-h) + 84px)}
+  :root{--panel-w:clamp(300px,86vw,640px); --panel-h:clamp(260px,44vh,560px); --spread:0vw}
+  .panel.is-left,.panel.is-right{transform:translate(-50%,-50%) translateZ(-6vmin) scale(.92)}
+  .plans{gap:24px}
+  .plan{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .form-foot-left,.form-foot-right{grid-column:1}
+  .form-foot-right{justify-content:flex-end}
 }
 
+/* Reduced motion */
+@media (prefers-reduced-motion:reduce){
+  .panel{transition:none}
+  .demo-underline,.pill-indicator{transition:none}
+  .panel[data-demo="b"] .side-panel,.plan[data-demo="b2"] .side-panel,
+  .panel[data-demo="b"] .hamburger span,.plan[data-demo="b2"] .hamburger span{animation:none}
+  .btn{transition:none}
+}
+
+/* === Ergänzungen: Burger-Demo === */
 .hamburger {
   position: absolute;
   top: 1rem;
@@ -108,7 +297,6 @@ body {
   cursor: pointer;
   z-index: 30;
 }
-
 .hamburger span {
   width: 28px;
   height: 3px;
@@ -119,7 +307,7 @@ body {
   position: relative;
 }
 
-/* Side panel */
+/* Side panel für Demo B */
 .side-panel {
   position: absolute;
   top: 0;
@@ -155,41 +343,4 @@ body {
 }
 .side-panel.open ~ .hamburger span:nth-child(3) {
   transform: translateY(180px);
-}
-
-/* ===== Pills Demo ===== */
-.pills {
-  display: flex;
-  position: relative;
-  background: rgba(255,255,255,0.06);
-  border-radius: 20px;
-  padding: 4px;
-}
-.pill {
-  flex: 1;
-  text-align: center;
-  padding: 6px 12px;
-  cursor: pointer;
-  position: relative;
-}
-.pill-indicator {
-  position: absolute;
-  top: 4px;
-  left: 0;
-  height: calc(100% - 8px);
-  background: #fff;
-  border-radius: 20px;
-  transition: transform 0.3s ease, width 0.3s ease;
-  z-index: 0;
-}
-.pill.active {
-  color: #111;
-  z-index: 1;
-}
-
-/* ===== Footer ===== */
-.site-footer {
-  text-align: center;
-  padding: 2rem;
-  background: rgba(255,255,255,0.04);
 }
