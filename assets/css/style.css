@@ -287,27 +287,28 @@ main{min-height:100svh}
   .btn{transition:none}
 }
 
-/* === Ergänzungen: Burger-Demo === */
+/* === Ergänzungen & Fixes für Burger-Demo === */
+
+/* Hamburger ist rein visuelle Demo -> nicht klickbar */
 .hamburger {
   position: absolute;
   top: 1rem;
   left: 1rem;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
+  gap: 6px;
+  pointer-events: none; /* keine Interaktion */
   z-index: 30;
 }
 .hamburger span {
-  width: 28px;
   height: 3px;
   background: #fff;
-  margin: 5px 0;
   border-radius: 2px;
-  transition: transform 0.6s ease;
-  position: relative;
+  transition: transform 0.6s ease, width 0.6s ease;
+  display: block;
 }
 
-/* Side panel für Demo B */
+/* Sidepanel-Demo */
 .side-panel {
   position: absolute;
   top: 0;
@@ -332,15 +333,21 @@ main{min-height:100svh}
 .side-panel .side-nav li {
   padding: 1rem;
   color: #fff;
+  position: relative;
 }
 
-/* Bars wandern nach unten wenn Panel offen ist */
+/* Dynamische Positionierung der Hamburger-Striche:
+   main.js misst Breite & Position der Texte und setzt CSS-Variablen --b1x, --b1y, --b1w etc.
+   Wir nutzen diese Variablen hier, um Striche direkt unter den Texten zu animieren. */
 .side-panel.open ~ .hamburger span:nth-child(1) {
-  transform: translateY(60px);
+  transform: translate(var(--b1x, 0), var(--b1y, 0));
+  width: var(--b1w, 28px);
 }
 .side-panel.open ~ .hamburger span:nth-child(2) {
-  transform: translateY(120px);
+  transform: translate(var(--b2x, 0), var(--b2y, 0));
+  width: var(--b2w, 28px);
 }
 .side-panel.open ~ .hamburger span:nth-child(3) {
-  transform: translateY(180px);
+  transform: translate(var(--b3x, 0), var(--b3y, 0));
+  width: var(--b3w, 28px);
 }
