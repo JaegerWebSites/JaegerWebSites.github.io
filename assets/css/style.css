@@ -287,65 +287,21 @@ main{min-height:100svh}
   .btn{transition:none}
 }
 
-/* === Verbesserungen für Burger-Demo === */
-
-/* Hamburger (rein visuell, nicht klickbar) */
-.hamburger {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  pointer-events: none;
-  z-index: 50;
-}
-.hamburger span {
-  height: 2px;
-  width: 30px;
-  background: #fff;
-  border-radius: 1px;
-  margin: 3px 0;
-  transition: transform 0.6s ease, width 0.6s ease;
-}
-.demo-content { position: relative; z-index: 1; }
-
-/* Sidepanel */
-.side-panel .side-nav{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+/* === Kompakte Darstellung der Sidepanel-Reiter === */
+.side-panel .side-nav {
   padding: 1rem;
 }
-.side-panel.open {
-  width: 33%;
-  min-width: 220px;
-  background: rgba(255,255,255,0.08);
-  pointer-events: auto;
-}
 
-/* SideNav enger setzen */
 .side-panel .side-nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
-}
-.side-panel .side-nav li {
-  margin: 0.5rem 0;
-  font-size: 0.95rem;
-  color: #fff;
+  display: block; /* kein Flexbox mehr */
 }
 
-/* Hamburger-Linien animieren unter Wörter */
-.side-panel.open ~ .hamburger span:nth-child(1) {
-  transform: translate(var(--b1x,0), var(--b1y,0));
-  width: var(--b1w,30px);
-}
-.side-panel.open ~ .hamburger span:nth-child(2) {
-  transform: translate(var(--b2x,0), var(--b2y,0));
-  width: var(--b2w,30px);
-}
-.side-panel.open ~ .hamburger span:nth-child(3) {
-  transform: translate(var(--b3x,0), var(--b3y,0));
-  width: var(--b3w,30px);
+.side-panel .side-nav li {
+  margin: 0.4rem 0;     /* enger Abstand */
+  font-size: 0.9rem;
+  line-height: 1.2;
+  color: #fff;
 }
