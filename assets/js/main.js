@@ -248,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Demos in den Plans darunter =====
   const planEls = Array.from(document.querySelectorAll('.plan'));
   const planDemos = planEls.map((el, i) => attachDemo(el, i === 1 ? 1400 : 1600)).filter(Boolean);
+  planDemos.forEach(d => d.start());
 
   // ===== About: wenn mit Hash geladen → zum Formular scrollen, dann Fokus setzen
   const contactSection = document.getElementById('contact-form');
