@@ -301,12 +301,13 @@ main{min-height:100svh}
   z-index: 30;
 }
 .hamburger span {
-  height: 3px;
-  background: #fff;
-  border-radius: 2px;
-  transition: transform 0.6s ease, width 0.6s ease;
   display: block;
-  width: 28px;
+  height: 2px;              /* dünner Strich */
+  width: 24px;              /* fix, nicht automatisch */
+  background: #fff;
+  border-radius: 1px;
+  margin: 4px 0;
+  transition: transform 0.6s ease, width 0.6s ease;
 }
 
 /* Sidepanel */
