@@ -117,7 +117,7 @@ if (type.startsWith('b')) {
     items.slice(0, 3).forEach((s, i) => {
       const r = s.getBoundingClientRect();
       const x = Math.round(r.left - hb.left);
-      const y = Math.round((r.bottom + 2) - hb.top);
+      const y = Math.round(r.bottom - hb.top);
       const w = Math.round(r.width);
       root.style.setProperty(`--b${i + 1}x`, `${x}px`);
       root.style.setProperty(`--b${i + 1}y`, `${y}px`);
