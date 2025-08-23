@@ -117,7 +117,7 @@ if (type.startsWith('b')) {
     items.slice(0, 3).forEach((s, i) => {
       const r = s.getBoundingClientRect();
       const x = Math.round(r.left - hb.left);
-      const y = Math.round(r.bottom - hb.top);
+      const y = Math.round(r.bottom - hb.top); // direkt unter Text
       const w = Math.round(r.width);
       root.style.setProperty(`--b${i + 1}x`, `${x}px`);
       root.style.setProperty(`--b${i + 1}y`, `${y}px`);
@@ -131,8 +131,7 @@ if (type.startsWith('b')) {
     items.forEach(s => s.classList.remove('hover'));
     if (el) { el.classList.add('hover'); pos(el); }
     j++;
-    // einmalig messen pro Step
-    requestAnimationFrame(() => requestAnimationFrame(measureBars));
+    // kein ständiges measureBars hier → nur optischer Hover
   };
 
   const start = () => {
@@ -160,7 +159,7 @@ if (type.startsWith('b')) {
   root._demoStart = start; root._demoStop = stop; root._demoStep = step;
   return { start, stop, step };
 }
-
+    }
 
     // C + C2: Pill-Navigation
     if (type.startsWith('c')) {
