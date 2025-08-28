@@ -133,14 +133,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Panel-Öffnung → Hamburger aktivieren und messen
   if (panel && hamburger) {
-    panel.addEventListener('animationstart', () => {
-      hamburger.classList.add('active');
-      setTimeout(measureBars, 200);
-    });
-    panel.addEventListener('animationend', () => {
-      hamburger.classList.remove('active');
-    });
-  }
+  panel.addEventListener('animationstart', () => {
+    // 1. active setzen (Startpunkt → Zielpunkt wird getriggert)
+    hamburger.classList.add('active');
+    // 2. ein wenig warten, dann Ziel messen
+    setTimeout(measureBars, 50);
+  });
+  panel.addEventListener('animationend', () => {
+    hamburger.classList.remove('active');
+  });
+}
 
   // Initial messen
   requestAnimationFrame(() => requestAnimationFrame(measureBars));
