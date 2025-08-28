@@ -125,6 +125,26 @@ main{min-height:100svh}
 .demo-underline{position:absolute; left:0; bottom:-2px; height:2px; width:0; background:var(--text); border-radius:2px; opacity:.9; transition:transform .4s var(--ease), width .4s var(--ease); will-change:transform,width}
 
 /* === BURGER DEMO (B) — FIX START === */
+/* Basisdarstellung Burger-Striche */
+.hamburger {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 50;
+  pointer-events: none; /* nur visuell */
+}
+
+.hamburger span {
+  display: block;
+  width: 30px;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+  transition: transform 0.6s ease, width 0.6s ease;
+}
 
 /* Keine statische Wort-Unterstreichung (stört die animierten Balken) */
 .side-nav li span::after { content: none !important; }
