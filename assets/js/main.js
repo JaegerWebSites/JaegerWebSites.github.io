@@ -134,12 +134,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Panel-Öffnung → Hamburger aktivieren und messen
   if (panel && hamburger) {
   panel.addEventListener('animationstart', () => {
-    // 1. active setzen (Startpunkt → Zielpunkt wird getriggert)
-    hamburger.classList.add('active');
-    // 2. ein wenig warten, dann Ziel messen
-    setTimeout(measureBars, 50);
+    // Striche erst zurücksetzen (Startposition)
+    hamburger.classList.remove('active');
+
+    // kleiner Delay, damit Browser das registriert
+    setTimeout(() => {
+      // Zielkoordinaten messen
+      measureBars();
+      // Jetzt Striche "aktivieren" → CSS interpoliert von Start nach Ziel
+      hamburger.classList.add('active');
+    }, 50);
   });
+
   panel.addEventListener('animationend', () => {
+    // Am Ende des Panels fahren die Striche wieder hoch
     hamburger.classList.remove('active');
   });
 }
