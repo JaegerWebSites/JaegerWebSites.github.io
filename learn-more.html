@@ -564,7 +564,7 @@
 
             :root {
                 --panel-w: clamp(300px, 85vw, 600px);
-                --panel-h: clamp(300px, 50vh, 500px);
+                --panel-h: clamp(200px, 35vh, 400px);
             }
 
             .plan {
@@ -886,7 +886,8 @@
         updateCarousel();
         startCarousel();
 
-        if (carousel) {
+        if (carousel && window.innerWidth > 900) {
+            // Only add hover pause on desktop
             carousel.addEventListener('mouseenter', stopCarousel);
             carousel.addEventListener('mouseleave', startCarousel);
         }
