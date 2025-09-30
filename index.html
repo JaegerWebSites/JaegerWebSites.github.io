@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jäger WebSites — Websites, die wirken</title>
+    <title>Jäger WebSites – Websites, die wirken</title>
     <meta name="description" content="Jäger WebSites: modernes Webdesign, minimalistisch, schnell, präzise.">
     <style>
         :root {
@@ -115,6 +115,27 @@
 
         .nav-toggle {
             display: none;
+            position: absolute;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--line);
+            background: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            padding: 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .nav-toggle .bar {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: var(--text);
+            margin: 3px 0;
+            transition: all 0.25s var(--ease);
         }
 
         /* Main Layout */
@@ -245,57 +266,83 @@
         /* Mobile Styles */
         @media (max-width: 900px) {
             .nav-inner {
-                justify-content: space-between;
+                justify-content: flex-end;
+            }
+
+            .brand {
+                left: auto;
+                right: 20px;
             }
 
             .nav-toggle {
-                display: block;
-                width: 44px;
-                height: 44px;
-                border: 1px solid var(--line);
-                background: transparent;
-                border-radius: 12px;
-                cursor: pointer;
-            }
-
-            .nav-toggle .bar {
-                display: block;
-                width: 18px;
-                height: 2px;
-                background: var(--text);
-                margin: 3px 0;
-                transition: all 0.25s var(--ease);
+                display: flex;
             }
 
             .nav {
                 position: fixed;
                 top: 64px;
                 left: 0;
-                right: 0;
+                bottom: 0;
+                width: 280px;
                 background: var(--panel);
-                border-top: 1px solid var(--line);
-                transform: translateY(-100%);
+                backdrop-filter: saturate(160%) blur(12px);
+                border-right: 1px solid var(--line);
+                transform: translateX(-100%);
                 transition: transform 0.35s var(--ease);
+                overflow-y: auto;
             }
 
             .site-header.open .nav {
-                transform: translateY(0);
+                transform: translateX(0);
             }
 
             .nav ul {
                 flex-direction: column;
                 padding: 24px;
-                text-align: center;
+                gap: 8px;
+            }
+
+            .nav a {
+                display: block;
+                padding: 12px 16px;
+                border-radius: 8px;
+                transition: all 0.2s var(--ease);
+            }
+
+            .nav a:hover,
+            .nav a.active {
+                background: rgba(255, 255, 255, 0.08);
             }
 
             .nav-underline {
                 display: none;
             }
+
+            /* Overlay when menu is open */
+            .site-header::before {
+                content: '';
+                position: fixed;
+                top: 64px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.35s var(--ease);
+            }
+
+            .site-header.open::before {
+                opacity: 1;
+                pointer-events: all;
+            }
         }
 
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
-            .btn {
+            .btn,
+            .nav,
+            .nav-toggle .bar {
                 transition: none;
             }
         }
@@ -305,13 +352,13 @@
     <!-- Header -->
     <header class="site-header" data-header>
         <div class="nav-inner">
-            <a class="brand" href="index.html">Jäger <span>WebSites</span></a>
-            
             <button class="nav-toggle" data-toggle aria-label="Menü öffnen">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
+
+            <a class="brand" href="index.html">Jäger <span>WebSites</span></a>
 
             <nav class="nav" data-nav>
                 <ul>
@@ -341,7 +388,7 @@
     </main>
 
     <footer class="site-footer">
-        <small> <span id="year">2024</span> Jäger WebSites</small>
+        <small>&copy; <span id="year">2024</span> Jäger WebSites</small>
     </footer>
 
     <script>
@@ -361,6 +408,7 @@
             // Position underline function
             function positionUnderline(link) {
                 if (!underline || !link) return;
+                if (window.innerWidth <= 900) return;
                 
                 const linkRect = link.getBoundingClientRect();
                 const navRect = nav.querySelector('ul').getBoundingClientRect();
@@ -371,22 +419,26 @@
             }
 
             // Initial underline position
-            if (activeLink) {
+            if (activeLink && window.innerWidth > 900) {
                 requestAnimationFrame(() => positionUnderline(activeLink));
             }
 
-            // Navigation hover effects
+            // Navigation hover effects (only on desktop)
             navLinks.forEach(link => {
-                link.addEventListener('mouseenter', () => positionUnderline(link));
-                link.addEventListener('focus', () => positionUnderline(link));
+                link.addEventListener('mouseenter', () => {
+                    if (window.innerWidth > 900) positionUnderline(link);
+                });
+                link.addEventListener('focus', () => {
+                    if (window.innerWidth > 900) positionUnderline(link);
+                });
             });
 
             nav.addEventListener('mouseleave', () => {
-                if (activeLink) positionUnderline(activeLink);
+                if (activeLink && window.innerWidth > 900) positionUnderline(activeLink);
             });
             
             window.addEventListener('resize', () => {
-                if (activeLink) positionUnderline(activeLink);
+                if (activeLink && window.innerWidth > 900) positionUnderline(activeLink);
             });
 
             // Mobile menu toggle
@@ -394,6 +446,29 @@
                 toggle.addEventListener('click', () => {
                     const isOpen = header.classList.toggle('open');
                     toggle.setAttribute('aria-expanded', isOpen);
+                    toggle.setAttribute('aria-label', isOpen ? 'Menü schließen' : 'Menü öffnen');
+                });
+
+                // Close menu when clicking overlay
+                document.addEventListener('click', (e) => {
+                    if (header.classList.contains('open') && 
+                        !nav.contains(e.target) && 
+                        !toggle.contains(e.target)) {
+                        header.classList.remove('open');
+                        toggle.setAttribute('aria-expanded', 'false');
+                        toggle.setAttribute('aria-label', 'Menü öffnen');
+                    }
+                });
+
+                // Close menu when clicking a link
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth <= 900) {
+                            header.classList.remove('open');
+                            toggle.setAttribute('aria-expanded', 'false');
+                            toggle.setAttribute('aria-label', 'Menü öffnen');
+                        }
+                    });
                 });
             }
         });
