@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jäger WebSites — Über uns</title>
+    <title>Jäger WebSites – Über uns</title>
     <meta name="description" content="Jäger WebSites: modernes Webdesign, minimalistisch, schnell, präzise.">
     <style>
         :root {
@@ -117,6 +117,14 @@
             display: none;
         }
 
+        .nav-toggle .bar {
+            width: 20px;
+            height: 2px;
+            background: var(--text);
+            margin: 3px 0;
+            display: block;
+        }
+
         /* Main Layout */
         main {
             min-height: 100vh;
@@ -143,7 +151,7 @@
         .page-title {
             font-size: clamp(28px, 4vw, 42px);
             margin: 0 0 16px;
-			margin-left: 2vw;
+            margin-left: 2vw;
         }
 
         /* Contact Form */
@@ -252,10 +260,10 @@
             color: #000;
             font-weight: 800;
         }
-		
-		.muted{
-			margin-left: 2vw;
-		}
+        
+        .muted {
+            margin-left: 2vw;
+        }
 
         /* Footer */
         .site-footer {
@@ -266,50 +274,104 @@
             color: var(--muted);
         }
 
+        /* Mobile Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 98;
+            display: none;
+        }
+
+        .menu-overlay.show {
+            display: block;
+        }
+
+        /* Mobile Sidebar */
+        .mobile-sidebar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background: #0a0d12;
+            border-right: 1px solid var(--line);
+            transform: translateX(-100%);
+            transition: transform 0.35s var(--ease);
+            z-index: 99;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .mobile-sidebar.show {
+            transform: translateX(0);
+        }
+
+        .mobile-sidebar ul {
+            list-style: none;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .mobile-sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .mobile-sidebar a {
+            display: block;
+            padding: 12px 16px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.88rem;
+            letter-spacing: 0.04em;
+            border-radius: 8px;
+            transition: all 0.2s var(--ease);
+        }
+
+        .mobile-sidebar a:hover,
+        .mobile-sidebar a.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+        }
+
         /* Mobile Styles */
         @media (max-width: 900px) {
             .nav-inner {
-                justify-content: space-between;
+                justify-content: flex-end;
+            }
+
+            .brand {
+                left: auto;
+                right: 20px;
             }
 
             .nav-toggle {
-                display: block;
+                display: flex;
+                position: absolute;
+                left: 20px;
                 width: 44px;
                 height: 44px;
                 border: 1px solid var(--line);
                 background: transparent;
                 border-radius: 12px;
                 cursor: pointer;
-            }
-
-            .nav-toggle .bar {
-                display: block;
-                width: 18px;
-                height: 2px;
-                background: var(--text);
-                margin: 3px 0;
-                transition: all 0.25s var(--ease);
+                padding: 0;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
             }
 
             .nav {
-                position: fixed;
-                top: 64px;
-                left: 0;
-                right: 0;
-                background: var(--panel);
-                border-top: 1px solid var(--line);
-                transform: translateY(-100%);
-                transition: transform 0.35s var(--ease);
+                display: none;
             }
 
-            .site-header.open .nav {
-                transform: translateY(0);
-            }
-
-            .nav ul {
-                flex-direction: column;
-                padding: 24px;
-                text-align: center;
+            .mobile-sidebar {
+                display: block;
             }
 
             .nav-underline {
@@ -329,7 +391,9 @@
 
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
-            .btn {
+            .btn,
+            .mobile-sidebar,
+            .menu-overlay {
                 transition: none;
             }
         }
@@ -337,33 +401,45 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="site-header" data-header>
+    <header class="site-header">
         <div class="nav-inner">
-            <a class="brand" href="index.html">Jäger <span>WebSites</span></a>
-            
-            <button class="nav-toggle" data-toggle aria-label="Menü öffnen">
+            <button class="nav-toggle" id="menuToggle" aria-label="Menü öffnen">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
 
-            <nav class="nav" data-nav>
+            <a class="brand" href="index.html">Jäger <span>WebSites</span></a>
+
+            <nav class="nav">
                 <ul>
-                    <li><a href="index.html" data-nav-link>Home</a></li>
-                    <li><a href="learn-more.html" data-nav-link>Learn More</a></li>
-                    <li><a href="about.html" data-nav-link class="active">About</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="learn-more.html">Learn More</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
                 </ul>
                 <div class="nav-underline"></div>
             </nav>
         </div>
     </header>
 
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn-more.html">Learn More</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+        </ul>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
     <main>
         <!-- About Section -->
         <section class="about-hero">
             <div class="section">
                 <h1 class="page-title">Über uns</h1>
-                <p class="muted">„Wir erstellen professionelle, standardisierte Websites zu einem unschlagbar günstigen Preis. Unser Ziel ist es, kleinen Unternehmen, Start-ups und Selbstständigen einen schnellen und einfachen Einstieg ins Web zu ermöglichen – modern, zuverlässig und ohne unnötigen Schnickschnack.“</p>
+                <p class="muted">„Wir erstellen professionelle, standardisierte Websites zu einem unschlagbar günstigen Preis. Unser Ziel ist es, kleinen Unternehmen, Start-ups und Selbstständigen einen schnellen und einfachen Einstieg ins Web zu ermöglichen – modern, zuverlässig und ohne unnötigen Schnickschnack."</p>
             </div>
         </section>
 
@@ -408,167 +484,174 @@
     </main>
 
     <footer class="site-footer">
-        <small> <span id="year">2024</span> Jäger WebSites</small>
+        <small>&copy; <span id="year">2024</span> Jäger WebSites</small>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set current year
-            document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-            // Navigation functionality
-            const header = document.querySelector('[data-header]');
-            const nav = document.querySelector('[data-nav]');
-            const navLinks = document.querySelectorAll('[data-nav-link]');
+        // Mobile Menu
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const sidebarLinks = mobileSidebar.querySelectorAll('a');
+
+        function openMenu() {
+            mobileSidebar.classList.add('show');
+            menuOverlay.classList.add('show');
+            menuToggle.setAttribute('aria-label', 'Menü schließen');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileSidebar.classList.remove('show');
+            menuOverlay.classList.remove('show');
+            menuToggle.setAttribute('aria-label', 'Menü öffnen');
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', function() {
+            const isOpen = mobileSidebar.classList.contains('show');
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        menuOverlay.addEventListener('click', closeMenu);
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Desktop Navigation underline
+        if (window.innerWidth > 900) {
+            const nav = document.querySelector('.nav');
+            const navLinks = document.querySelectorAll('.nav a');
             const underline = document.querySelector('.nav-underline');
-            const toggle = document.querySelector('[data-toggle]');
+            let activeLink = document.querySelector('.nav a.active');
 
-            let activeLink = document.querySelector('[data-nav-link].active');
-
-            // Position underline function
             function positionUnderline(link) {
                 if (!underline || !link) return;
-                
                 const linkRect = link.getBoundingClientRect();
                 const navRect = nav.querySelector('ul').getBoundingClientRect();
-                
                 underline.style.opacity = '1';
-                underline.style.width = `${linkRect.width}px`;
-                underline.style.transform = `translateX(${linkRect.left - navRect.left}px)`;
+                underline.style.width = linkRect.width + 'px';
+                underline.style.transform = 'translateX(' + (linkRect.left - navRect.left) + 'px)';
             }
 
-            // Initial underline position
             if (activeLink) {
-                requestAnimationFrame(() => positionUnderline(activeLink));
+                setTimeout(() => positionUnderline(activeLink), 100);
             }
 
-            // Navigation hover effects
             navLinks.forEach(link => {
                 link.addEventListener('mouseenter', () => positionUnderline(link));
-                link.addEventListener('focus', () => positionUnderline(link));
             });
 
             nav.addEventListener('mouseleave', () => {
                 if (activeLink) positionUnderline(activeLink);
             });
-            
-            window.addEventListener('resize', () => {
-                if (activeLink) positionUnderline(activeLink);
+        }
+
+        // Contact form validation
+        const form = document.getElementById('contactForm');
+        if (form) {
+            const errorEl = form.querySelector('.form-error');
+            const fields = {
+                firstName: form.querySelector('#firstName'),
+                lastName: form.querySelector('#lastName'),
+                email: form.querySelector('#email'),
+                website: form.querySelector('#website'),
+                message: form.querySelector('#message')
+            };
+
+            function clearErrors() {
+                Object.values(fields).forEach(field => {
+                    if (field) field.classList.remove('invalid');
+                });
+                if (errorEl) errorEl.style.display = 'none';
+            }
+
+            function validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                clearErrors();
+
+                let isValid = true;
+
+                if (!fields.firstName.value.trim()) {
+                    fields.firstName.classList.add('invalid');
+                    isValid = false;
+                }
+
+                if (!fields.lastName.value.trim()) {
+                    fields.lastName.classList.add('invalid');
+                    isValid = false;
+                }
+
+                if (!fields.email.value.trim() || !validateEmail(fields.email.value.trim())) {
+                    fields.email.classList.add('invalid');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    if (errorEl) errorEl.style.display = 'block';
+                    return;
+                }
+
+                const subject = 'Kontaktanfrage Jäger WebSites';
+                const body = [
+                    `Name: ${fields.lastName.value.trim()}`,
+                    `Vorname: ${fields.firstName.value.trim()}`,
+                    `E-Mail: ${fields.email.value.trim()}`,
+                    `Website: ${fields.website.value.trim() || '-'}`,
+                    `Nachricht: ${fields.message.value.trim() || '-'}`
+                ].join('\n');
+
+                const mailtoLink = `mailto:benedikt.jaeger@jf-optimization.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                
+                const link = document.createElement('a');
+                link.href = mailtoLink;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             });
 
-            // Mobile menu toggle
-            if (toggle && header) {
-                toggle.addEventListener('click', () => {
-                    const isOpen = header.classList.toggle('open');
-                    toggle.setAttribute('aria-expanded', isOpen);
-                });
-            }
+            ['firstName', 'lastName', 'email'].forEach(fieldName => {
+                const field = fields[fieldName];
+                if (!field) return;
 
-            // Contact form validation
-            const form = document.getElementById('contactForm');
-            if (form) {
-                const errorEl = form.querySelector('.form-error');
-                const fields = {
-                    firstName: form.querySelector('#firstName'),
-                    lastName: form.querySelector('#lastName'),
-                    email: form.querySelector('#email'),
-                    website: form.querySelector('#website'),
-                    message: form.querySelector('#message')
-                };
-
-                function clearErrors() {
-                    Object.values(fields).forEach(field => {
-                        if (field) field.classList.remove('invalid');
-                    });
+                field.addEventListener('input', () => {
+                    field.classList.remove('invalid');
                     if (errorEl) errorEl.style.display = 'none';
-                }
-
-                function validateEmail(email) {
-                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-                }
-
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    clearErrors();
-
-                    let isValid = true;
-
-                    // Validate required fields
-                    if (!fields.firstName.value.trim()) {
-                        fields.firstName.classList.add('invalid');
-                        isValid = false;
-                    }
-
-                    if (!fields.lastName.value.trim()) {
-                        fields.lastName.classList.add('invalid');
-                        isValid = false;
-                    }
-
-                    if (!fields.email.value.trim() || !validateEmail(fields.email.value.trim())) {
-                        fields.email.classList.add('invalid');
-                        isValid = false;
-                    }
-
-                    // Website field is optional - no validation needed
-
-                    if (!isValid) {
-                        if (errorEl) errorEl.style.display = 'block';
-                        return;
-                    }
-
-                    // Create mailto link
-                    const subject = 'Kontaktanfrage Jäger WebSites';
-                    const body = [
-                        `Name: ${fields.lastName.value.trim()}`,
-                        `Vorname: ${fields.firstName.value.trim()}`,
-                        `E-Mail: ${fields.email.value.trim()}`,
-                        `Website: ${fields.website.value.trim() || '-'}`,
-                        `Nachricht: ${fields.message.value.trim() || '-'}`
-                    ].join('\n');
-
-                    const mailtoLink = `mailto:benedikt.jaeger@jf-optimization.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                    
-                    // Create temporary link and click it
-                    const link = document.createElement('a');
-                    link.href = mailtoLink;
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
                 });
 
-                // Real-time validation for required fields only
-                ['firstName', 'lastName', 'email'].forEach(fieldName => {
-                    const field = fields[fieldName];
-                    if (!field) return;
-
-                    field.addEventListener('input', () => {
-                        field.classList.remove('invalid');
-                        if (errorEl) errorEl.style.display = 'none';
-                    });
-
-                    field.addEventListener('blur', () => {
-                        if (fieldName === 'email') {
-                            if (field.value && !validateEmail(field.value)) {
-                                field.classList.add('invalid');
-                            }
-                        } else if (!field.value.trim()) {
+                field.addEventListener('blur', () => {
+                    if (fieldName === 'email') {
+                        if (field.value && !validateEmail(field.value)) {
                             field.classList.add('invalid');
                         }
-                    });
-                });
-            }
-
-            // Smooth scroll for internal links
-            document.querySelectorAll('a[href^="#"]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    } else if (!field.value.trim()) {
+                        field.classList.add('invalid');
                     }
                 });
+            });
+        }
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
             });
         });
     </script>
