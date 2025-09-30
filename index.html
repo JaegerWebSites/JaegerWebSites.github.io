@@ -8,7 +8,7 @@
     <style>
         :root {
             --bg: #0a0d12;
-            --panel: rgba(12, 16, 22, 0.72);
+            --panel: rgba(12, 16, 22, 0.95);
             --text: #e8eaed;
             --muted: #9aa0a6;
             --line: rgba(255, 255, 255, 0.12);
@@ -123,19 +123,20 @@
             background: transparent;
             border-radius: 12px;
             cursor: pointer;
-            padding: 0;
+            padding: 10px;
+            z-index: 102;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
         }
 
         .nav-toggle .bar {
-            display: block;
-            width: 18px;
+            width: 20px;
             height: 2px;
             background: var(--text);
             margin: 3px 0;
-            transition: all 0.25s var(--ease);
+            transition: all 0.3s var(--ease);
+            display: block;
         }
 
         /* Main Layout */
@@ -202,6 +203,7 @@
             display: flex;
             gap: 16px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -263,6 +265,25 @@
             color: var(--muted);
         }
 
+        /* Mobile Menu Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 98;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);
+        }
+
+        .menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Mobile Styles */
         @media (max-width: 900px) {
             .nav-inner {
@@ -281,19 +302,18 @@
             .nav {
                 position: fixed;
                 top: 64px;
-                left: 0;
+                left: -280px;
                 bottom: 0;
                 width: 280px;
-                background: var(--panel);
-                backdrop-filter: saturate(160%) blur(12px);
+                background: #0a0d12;
                 border-right: 1px solid var(--line);
-                transform: translateX(-100%);
-                transition: transform 0.35s var(--ease);
+                transition: left 0.35s var(--ease);
                 overflow-y: auto;
+                z-index: 101;
             }
 
-            .site-header.open .nav {
-                transform: translateX(0);
+            .nav.show {
+                left: 0;
             }
 
             .nav ul {
@@ -312,29 +332,11 @@
             .nav a:hover,
             .nav a.active {
                 background: rgba(255, 255, 255, 0.08);
+                color: var(--text);
             }
 
             .nav-underline {
                 display: none;
-            }
-
-            /* Overlay when menu is open */
-            .site-header::before {
-                content: '';
-                position: fixed;
-                top: 64px;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.35s var(--ease);
-            }
-
-            .site-header.open::before {
-                opacity: 1;
-                pointer-events: all;
             }
         }
 
@@ -342,7 +344,8 @@
         @media (prefers-reduced-motion: reduce) {
             .btn,
             .nav,
-            .nav-toggle .bar {
+            .nav-toggle .bar,
+            .menu-overlay {
                 transition: none;
             }
         }
@@ -350,9 +353,9 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="site-header" data-header>
+    <header class="site-header">
         <div class="nav-inner">
-            <button class="nav-toggle" data-toggle aria-label="Menü öffnen">
+            <button class="nav-toggle" id="menuToggle" aria-label="Menü öffnen" aria-expanded="false">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -360,16 +363,19 @@
 
             <a class="brand" href="index.html">Jäger <span>WebSites</span></a>
 
-            <nav class="nav" data-nav>
+            <nav class="nav" id="mainNav">
                 <ul>
-                    <li><a href="index.html" data-nav-link class="active">Home</a></li>
-                    <li><a href="learn-more.html" data-nav-link>Learn More</a></li>
-                    <li><a href="about.html" data-nav-link>About</a></li>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="learn-more.html">Learn More</a></li>
+                    <li><a href="about.html">About</a></li>
                 </ul>
                 <div class="nav-underline"></div>
             </nav>
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
 
     <main>
         <!-- Hero Section -->
@@ -392,86 +398,86 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set current year
-            document.getElementById('year').textContent = new Date().getFullYear();
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-            // Navigation functionality
-            const header = document.querySelector('[data-header]');
-            const nav = document.querySelector('[data-nav]');
-            const navLinks = document.querySelectorAll('[data-nav-link]');
+        // Mobile Menu
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const navLinks = mainNav.querySelectorAll('a');
+
+        function openMenu() {
+            mainNav.classList.add('show');
+            menuOverlay.classList.add('show');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            menuToggle.setAttribute('aria-label', 'Menü schließen');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mainNav.classList.remove('show');
+            menuOverlay.classList.remove('show');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Menü öffnen');
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const isOpen = mainNav.classList.contains('show');
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        menuOverlay.addEventListener('click', closeMenu);
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 900) {
+                    closeMenu();
+                }
+            });
+        });
+
+        // Desktop Navigation underline
+        if (window.innerWidth > 900) {
+            const nav = document.querySelector('.nav');
+            const navLinksAll = document.querySelectorAll('.nav a');
             const underline = document.querySelector('.nav-underline');
-            const toggle = document.querySelector('[data-toggle]');
+            let activeLink = document.querySelector('.nav a.active');
 
-            let activeLink = document.querySelector('[data-nav-link].active');
-
-            // Position underline function
             function positionUnderline(link) {
-                if (!underline || !link) return;
-                if (window.innerWidth <= 900) return;
+                if (!underline || !link || window.innerWidth <= 900) return;
                 
                 const linkRect = link.getBoundingClientRect();
                 const navRect = nav.querySelector('ul').getBoundingClientRect();
                 
                 underline.style.opacity = '1';
-                underline.style.width = `${linkRect.width}px`;
-                underline.style.transform = `translateX(${linkRect.left - navRect.left}px)`;
+                underline.style.width = linkRect.width + 'px';
+                underline.style.transform = 'translateX(' + (linkRect.left - navRect.left) + 'px)';
             }
 
-            // Initial underline position
-            if (activeLink && window.innerWidth > 900) {
-                requestAnimationFrame(() => positionUnderline(activeLink));
+            if (activeLink) {
+                setTimeout(() => positionUnderline(activeLink), 100);
             }
 
-            // Navigation hover effects (only on desktop)
-            navLinks.forEach(link => {
-                link.addEventListener('mouseenter', () => {
-                    if (window.innerWidth > 900) positionUnderline(link);
-                });
-                link.addEventListener('focus', () => {
-                    if (window.innerWidth > 900) positionUnderline(link);
-                });
+            navLinksAll.forEach(link => {
+                link.addEventListener('mouseenter', () => positionUnderline(link));
             });
 
             nav.addEventListener('mouseleave', () => {
-                if (activeLink && window.innerWidth > 900) positionUnderline(activeLink);
+                if (activeLink) positionUnderline(activeLink);
             });
-            
+
             window.addEventListener('resize', () => {
                 if (activeLink && window.innerWidth > 900) positionUnderline(activeLink);
             });
-
-            // Mobile menu toggle
-            if (toggle && header) {
-                toggle.addEventListener('click', () => {
-                    const isOpen = header.classList.toggle('open');
-                    toggle.setAttribute('aria-expanded', isOpen);
-                    toggle.setAttribute('aria-label', isOpen ? 'Menü schließen' : 'Menü öffnen');
-                });
-
-                // Close menu when clicking overlay
-                document.addEventListener('click', (e) => {
-                    if (header.classList.contains('open') && 
-                        !nav.contains(e.target) && 
-                        !toggle.contains(e.target)) {
-                        header.classList.remove('open');
-                        toggle.setAttribute('aria-expanded', 'false');
-                        toggle.setAttribute('aria-label', 'Menü öffnen');
-                    }
-                });
-
-                // Close menu when clicking a link
-                navLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        if (window.innerWidth <= 900) {
-                            header.classList.remove('open');
-                            toggle.setAttribute('aria-expanded', 'false');
-                            toggle.setAttribute('aria-label', 'Menü öffnen');
-                        }
-                    });
-                });
-            }
-        });
+        }
     </script>
 </body>
 </html>
