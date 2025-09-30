@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jäger WebSites — Learn More</title>
+    <title>Jäger WebSites – Learn More</title>
     <meta name="description" content="Jäger WebSites: modernes Webdesign, minimalistisch, schnell, präzise.">
     <style>
         :root {
@@ -117,6 +117,14 @@
 
         .nav-toggle {
             display: none;
+        }
+
+        .nav-toggle .bar {
+            width: 20px;
+            height: 2px;
+            background: var(--text);
+            margin: 3px 0;
+            display: block;
         }
 
         /* Main Layout */
@@ -238,251 +246,24 @@
         }
 
         .demo-content {
-            flex = 1;
+            flex: 1;
             padding: 0px;
             display: flex;
             flex-direction: column;
             gap: 16px;
             position: relative;
-			text-align: center;
-        }
-
-        /* Demo A: Top Navigation */
-		.video1{
-			width: 100%;
-		}
-		
-        .demo-nav {
-            position: relative;
-            margin-bottom: 16px;
-        }
-
-        .demo-nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            gap: 18px;
-        }
-
-        .demo-nav li {
-            padding: 8px 0;
-            color: var(--accent);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.04em;
-            transition: color 0.25s var(--ease);
-            cursor: pointer;
-        }
-
-        .demo-nav li.active {
-            color: var(--text);
-        }
-
-        .demo-underline {
-            position: absolute;
-            bottom: 0;
-            height: 2px;
-            background: var(--text);
-            border-radius: 2px;
-            transition: all 0.4s var(--ease);
-            opacity: 1;
-            width: 0;
-            left: 0;
-        }
-
-        /* Demo B: Hamburger Menu */
-		.video2{
-			width: 100%;
-		}
-		
-        .hamburger {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            width: 28px;
-            height: 24px;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .hamburger span {
-            position: absolute;
-            width: 28px;
-            height: 3px;
-            background: var(--text);
-            border-radius: 2px;
-            transition: all 0.3s var(--ease);
-        }
-
-        .hamburger span:nth-child(1) { top: 0; }
-        .hamburger span:nth-child(2) { top: 10px; }
-        .hamburger span:nth-child(3) { top: 20px; }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg);
-            top: 10px;
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg);
-            top: 10px;
-        }
-
-        .side-panel {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 60%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.08);
-            border-right: 1px solid var(--line);
-            transition: left 0.3s var(--ease);
-            padding: 60px 20px 20px;
-            z-index: 5;
-        }
-
-        .side-panel.active {
-            left: 0;
-        }
-
-        .side-nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .side-nav li {
-            margin: 16px 0;
-            color: var(--accent);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.04em;
-            transition: all 0.25s var(--ease);
-            padding-bottom: 8px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .side-nav li::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--text);
-            transition: width 0.3s var(--ease);
-        }
-
-        .side-nav li.active {
-            color: var(--text);
-        }
-
-        .side-nav li.active::after {
-            width: 100%;
-        }
-
-        /* Demo C: Scroll Experience */
-        .scroll-container {
-            height: 100%;
-            overflow: hidden;
-        }
-		
-		.soon {
-			font-size: 200%;
-			line-height: 35vh;
-		}
-
-        .scroll-nav-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 24px;
-            background: rgba(255, 255, 255, 0.03);
-            border-bottom: 1px solid var(--line);
-            z-index: 2;
-        }
-
-        .scroll-nav-bar span {
-            font-size: 0.75rem;
-            color: var(--accent);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .scroll-content {
-            position: absolute;
-            top: 40px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            animation: smoothScroll 8s ease-in-out infinite;
-        }
-
-        .scroll-section {
-            height: 80%;
-            margin: 10% 0;
-            padding: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
             text-align: center;
         }
 
-        .scroll-section h3 {
-            margin: 0 0 12px;
-            font-size: 1.2rem;
-            color: var(--text);
+        .demo-content video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .scroll-section p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--muted);
-        }
-
-        @keyframes smoothScroll {
-            0%, 20% { transform: translateY(0); }
-            35%, 55% { transform: translateY(-90%); }
-            70%, 90% { transform: translateY(-180%); }
-            100% { transform: translateY(0); }
-        }
-
-        /* Content placeholders */
-        .placeholder-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            flex: 1;
-        }
-
-        .placeholder-card {
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            height: 80px;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-        }
-
-        .placeholder-card.wide {
-            grid-column: 1 / -1;
-            height: 50px;
+        .soon {
+            font-size: 200%;
+            line-height: 35vh;
         }
 
         /* Caption */
@@ -559,18 +340,10 @@
             margin: 0;
             color: var(--muted);
         }
-		
-		#plan-a{
-			scroll-margin-top: 100px;
-		}
-		
-		#plan-b{
-			scroll-margin-top: 100px;
-		}
-		
-		#plan-c{
-			scroll-margin-top: 100px;
-		}
+        
+        #plan-a, #plan-b, #plan-c {
+            scroll-margin-top: 100px;
+        }
 
         .price {
             font-size: clamp(22px, 3.2vw, 28px);
@@ -653,57 +426,111 @@
             background: radial-gradient(circle at 70% 50%, #34d399, transparent 55%);
         }
 
+        /* Mobile Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 98;
+            display: none;
+        }
+
+        .menu-overlay.show {
+            display: block;
+        }
+
+        /* Mobile Sidebar */
+        .mobile-sidebar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background: #0a0d12;
+            border-right: 1px solid var(--line);
+            transform: translateX(-100%);
+            transition: transform 0.35s var(--ease);
+            z-index: 99;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .mobile-sidebar.show {
+            transform: translateX(0);
+        }
+
+        .mobile-sidebar ul {
+            list-style: none;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .mobile-sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .mobile-sidebar a {
+            display: block;
+            padding: 12px 16px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.88rem;
+            letter-spacing: 0.04em;
+            border-radius: 8px;
+            transition: all 0.2s var(--ease);
+        }
+
+        .mobile-sidebar a:hover,
+        .mobile-sidebar a.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text);
+        }
+
         /* Mobile Styles */
         @media (max-width: 900px) {
             .nav-inner {
-                justify-content: space-between;
+                justify-content: flex-end;
+            }
+
+            .brand {
+                left: auto;
+                right: 20px;
             }
 
             .nav-toggle {
-                display: block;
+                display: flex;
+                position: absolute;
+                left: 20px;
                 width: 44px;
                 height: 44px;
                 border: 1px solid var(--line);
                 background: transparent;
                 border-radius: 12px;
                 cursor: pointer;
-            }
-
-            .nav-toggle .bar {
-                display: block;
-                width: 18px;
-                height: 2px;
-                background: var(--text);
-                margin: 3px 0;
-                transition: all 0.25s var(--ease);
+                padding: 0;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
             }
 
             .nav {
-                position: fixed;
-                top: 64px;
-                left: 0;
-                right: 0;
-                background: var(--panel);
-                border-top: 1px solid var(--line);
-                transform: translateY(-100%);
-                transition: transform 0.35s var(--ease);
+                display: none;
             }
 
-            .site-header.open .nav {
-                transform: translateY(0);
-            }
-
-            .nav ul {
-                flex-direction: column;
-                padding: 24px;
-                text-align: center;
+            .mobile-sidebar {
+                display: block;
             }
 
             .nav-underline {
                 display: none;
             }
 
-            /* Mobile Carousel - Show only one panel at a time */
+            /* Mobile Carousel - Show only two panels */
             .carousel {
                 width: 100%;
                 height: calc(var(--panel-h) + 80px);
@@ -732,6 +559,11 @@
                 z-index: 1;
             }
 
+            /* Hide the "Coming Soon" panel on mobile */
+            .panel[data-demo="scroll"] {
+                display: none;
+            }
+
             :root {
                 --panel-w: clamp(300px, 85vw, 600px);
                 --panel-h: clamp(300px, 50vh, 500px);
@@ -741,46 +573,54 @@
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-			
         }
 
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             .panel,
-            .demo-underline,
-            .scroll-content {
+            .btn,
+            .mobile-sidebar,
+            .menu-overlay {
                 transition: none;
                 animation: none;
-            }
-            
-            .btn {
-                transition: none;
             }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="site-header" data-header>
+    <header class="site-header">
         <div class="nav-inner">
-            <a class="brand" href="index.html">Jäger <span>WebSites</span></a>
-            
-            <button class="nav-toggle" data-toggle aria-label="Menü öffnen">
+            <button class="nav-toggle" id="menuToggle" aria-label="Menü öffnen">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
 
-            <nav class="nav" data-nav>
+            <a class="brand" href="index.html">Jäger <span>WebSites</span></a>
+
+            <nav class="nav">
                 <ul>
-                    <li><a href="index.html" data-nav-link>Home</a></li>
-                    <li><a href="learn-more.html" data-nav-link class="active">Learn More</a></li>
-                    <li><a href="about.html" data-nav-link>About</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="learn-more.html" class="active">Learn More</a></li>
+                    <li><a href="about.html">About</a></li>
                 </ul>
                 <div class="nav-underline"></div>
             </nav>
         </div>
     </header>
+
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="learn-more.html" class="active">Learn More</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
 
     <main>
         <!-- Learn More Section -->
@@ -788,130 +628,62 @@
             <div class="carousel" data-carousel>
                 <!-- Panel A: Top Navigation -->
                 <div class="panel active" data-demo="nav">
-				<a href="#plan-a">
-                    <div class="demo-window">
-                        <div class="demo-chrome">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                            <div class="demo-url">jaeger-websites.dev/ui</div>
-                        </div>
-                        <div class="demo-content">
-                            <!--<div class="demo-nav">
-                                <ul>
-                                    <li class="active">Design</li>
-                                    <li>Build</li>
-                                    <li>Launch</li>
-                                </ul>
-                                <div class="demo-underline"></div>
+                    <a href="#plan-a">
+                        <div class="demo-window">
+                            <div class="demo-chrome">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <div class="demo-url">jaeger-websites.dev/ui</div>
                             </div>
-                            <div class="placeholder-grid">
-                                <div class="placeholder-card"></div>
-                                <div class="placeholder-card"></div>
-                                <div class="placeholder-card wide"></div>
-                            </div>-->
-							<video
-							src="video2.mp4"
-							autoplay
-							loop
-							muted
-							preload="metadata"
-							playsinline
-							></video>
+                            <div class="demo-content">
+                                <video src="video2.mp4" autoplay loop muted preload="metadata" playsinline></video>
+                            </div>
                         </div>
-                    </div>
-                    <div class="caption">
-                        <a class="caption-link" href="#plan-a">Erfahre mehr</a>
-                    </div>
-				</a>
+                        <div class="caption">
+                            <a class="caption-link" href="#plan-a">Erfahre mehr</a>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Panel B: Hamburger Menu -->
                 <div class="panel right" data-demo="burger">
-					<a href="#plan-b">
-                    <div class="demo-window">
-                        <div class="demo-chrome">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                            <div class="demo-url">jaeger-websites.dev/menu</div>
-                        </div>
-                        <div class="demo-content">
-                            <!--<div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
+                    <a href="#plan-b">
+                        <div class="demo-window">
+                            <div class="demo-chrome">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <div class="demo-url">jaeger-websites.dev/menu</div>
                             </div>
-                            <div class="side-panel">
-                                <nav class="side-nav">
-                                    <ul>
-                                        <li class="active">Home</li>
-                                        <li>Learn More</li>
-                                        <li>About</li>
-                                    </ul>
-                                </nav>
+                            <div class="demo-content">
+                                <video src="video3.mp4" autoplay loop muted preload="metadata" playsinline></video>
                             </div>
-                            <div class="placeholder-grid">
-                                <div class="placeholder-card"></div>
-                                <div class="placeholder-card"></div>
-                                <div class="placeholder-card wide"></div>
-                            </div>-->
-							<video
-							
-							src="video3.mp4"
-							autoplay
-							loop
-							muted
-							preload="metadata"
-							playsinline
-							></video>
                         </div>
-                    </div>
-					</a>
+                    </a>
                     <div class="caption">
                         <a class="caption-link" href="#plan-b">Erfahre mehr</a>
                     </div>
                 </div>
 
-                <!-- Panel C: Scroll Experience -->
+                <!-- Panel C: Scroll Experience (hidden on mobile) -->
                 <div class="panel left" data-demo="scroll">
-				<a href="#plan-c">
-				   <div class="demo-window">
-                        <div class="demo-chrome">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                            <div class="demo-url">jaeger-websites.dev/scroll</div>
+                    <a href="#plan-c">
+                        <div class="demo-window">
+                            <div class="demo-chrome">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <div class="demo-url">jaeger-websites.dev/scroll</div>
+                            </div>
+                            <div class="demo-content">
+                                <div class="soon">Coming soon!</div>
+                            </div>
                         </div>
-                        <div class="demo-content">
-                            <!--<div class="scroll-container">
-                                <div class="scroll-nav-bar">
-                                    <span>Home</span>
-                                    <span>Learn More</span>
-                                    <span>About</span>
-                                </div>
-                                <div class="scroll-content">
-                                    <div class="scroll-section">
-                                        <h3>Modernes Webdesign</h3>
-                                        <p>Beeindruckendes Design, das Ihre Marke repräsentiert und Besucher begeistert.</p>
-                                    </div>
-                                    <div class="scroll-section">
-                                        <h3>Maximale Performance</h3>
-                                        <p>Unsere Websites laden blitzschnell und sind für alle Geräte optimiert.</p>
-                                    </div>
-                                    <div class="scroll-section">
-                                        <h3>Individuelle Lösungen</h3>
-                                        <p>Maßgeschneiderte Websites, die perfekt auf Ihre Bedürfnisse zugeschnitten sind.</p>
-                                    </div>
-                                </div>
-                            </div>-->
-							<div class="soon">Comming soon!</div>
+                        <div class="caption">
+                            <a class="caption-link" href="#plan-c">Erfahre mehr</a>
                         </div>
-                    </div>
-                    <div class="caption">
-                        <a class="caption-link" href="#plan-c">Erfahre mehr</a>
-                    </div>
-				</a>
+                    </a>
                 </div>
             </div>
 
@@ -932,34 +704,13 @@
                             <div class="demo-url">jaeger-websites.dev/ui</div>
                         </div>
                         <div class="demo-content">
-                            <!--<div class="demo-nav" data-plan-demo="nav">
-                                <ul>
-                                    <li class="active">Design</li>
-                                    <li>Build</li>
-                                    <li>Launch</li>
-                                </ul>
-                                <div class="demo-underline"></div>
-                            </div>
-                            <div class="placeholder-grid">
-                                <div class="placeholder-card"></div>
-                                <div class="placeholder-card"></div>
-                                <div class="placeholder-card wide"></div>
-                            </div>-->
-							<video
-							class=video1
-							src="video2.mp4"
-							autoplay
-							loop
-							muted
-							preload="metadata"
-							playsinline
-							></video>
+                            <video src="video2.mp4" autoplay loop muted preload="metadata" playsinline></video>
                         </div>
                     </div>
                 </div>
                 <div class="plan-copy">
                     <h2>Klare Top-Navigation</h2>
-                    <p>Minimalistische Leiste mit präzisem Hover-Indikator — schnell, verständlich, vertraut.</p>
+                    <p>Minimalistische Leiste mit präzisem Hover-Indikator – schnell, verständlich, vertraut.</p>
                     <div class="price">500€</div>
                     <a class="btn" href="about.html#contact">Kontakt</a>
                     <small class="note">Anpassungen gegen Aufpreis</small>
@@ -976,42 +727,14 @@
                             <span class="dot green"></span>
                             <div class="demo-url">jaeger-websites.dev/menu</div>
                         </div>
-                        <div class="demo-content" data-plan-demo="burger">
-                            <!--<div class="hamburger">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                            <div class="side-panel">
-                                <nav class="side-nav">
-                                    <ul>
-                                        <li class="active">Home</li>
-                                        <li>Learn More</li>
-                                        <li>About</li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div class="placeholder-grid">
-                                <div class="placeholder-card"></div>
-                                <div class="placeholder-card"></div>
-                                <div class="placeholder-card wide"></div>
-                            </div>-->
-							<video
-							class=video2
-							src="video3.mp4"
-							
-							autoplay
-							loop
-							muted
-							preload="metadata"
-							playsinline
-							></video>
+                        <div class="demo-content">
+                            <video src="video3.mp4" autoplay loop muted preload="metadata" playsinline></video>
                         </div>
                     </div>
                 </div>
                 <div class="plan-copy">
                     <h2>Seitenmenü für Fokus</h2>
-                    <p>Hamburger-Icon öffnet eine fokussierte, vertikale Navigation — perfekt für viele Reiter.</p>
+                    <p>Hamburger-Icon öffnet eine fokussierte, vertikale Navigation – perfekt für viele Reiter.</p>
                     <div class="price">500€</div>
                     <a class="btn" href="about.html#contact">Kontakt</a>
                     <small class="note">Anpassungen gegen Aufpreis</small>
@@ -1029,272 +752,156 @@
                             <div class="demo-url">jaeger-websites.dev/scroll</div>
                         </div>
                         <div class="demo-content">
-                            <!--<div class="scroll-container">
-                                <div class="scroll-nav-bar">
-                                    <span>Home</span>
-                                    <span>Learn More</span>
-                                    <span>About</span>
-                                </div>
-                                <div class="scroll-content">
-                                    <div class="scroll-section">
-                                        <h3>Modernes Webdesign</h3>
-                                        <p>Beeindruckendes Design, das Ihre Marke repräsentiert und Besucher begeistert.</p>
-                                    </div>
-                                    <div class="scroll-section">
-                                        <h3>Maximale Performance</h3>
-                                        <p>Unsere Websites laden blitzschnell und sind für alle Geräte optimiert.</p>
-                                    </div>
-                                    <div class="scroll-section">
-                                        <h3>Individuelle Lösungen</h3>
-                                        <p>Maßgeschneiderte Websites, die perfekt auf Ihre Bedürfnisse zugeschnitten sind.</p>
-                                    </div>
-                                </div>
-                            </div>-->
-							<div class="soon">Comming soon!</div>
+                            <div class="soon">Coming soon!</div>
                         </div>
                     </div>
                 </div>
                 <div class="plan-copy">
-                    <h2>Comming soon!</h2>
+                    <h2>Coming soon!</h2>
                 </div>
             </article>
         </section>
     </main>
 
     <footer class="site-footer">
-        <small> <span id="year">2024</span> Jäger WebSites</small>
+        <small>&copy; <span id="year">2024</span> Jäger WebSites</small>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set current year
-            document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-            // Navigation functionality
-            const header = document.querySelector('[data-header]');
-            const nav = document.querySelector('[data-nav]');
-            const navLinks = document.querySelectorAll('[data-nav-link]');
+        // Mobile Menu
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const sidebarLinks = mobileSidebar.querySelectorAll('a');
+
+        function openMenu() {
+            mobileSidebar.classList.add('show');
+            menuOverlay.classList.add('show');
+            menuToggle.setAttribute('aria-label', 'Menü schließen');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileSidebar.classList.remove('show');
+            menuOverlay.classList.remove('show');
+            menuToggle.setAttribute('aria-label', 'Menü öffnen');
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', function() {
+            const isOpen = mobileSidebar.classList.contains('show');
+            if (isOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        menuOverlay.addEventListener('click', closeMenu);
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Desktop Navigation underline
+        if (window.innerWidth > 900) {
+            const nav = document.querySelector('.nav');
+            const navLinks = document.querySelectorAll('.nav a');
             const underline = document.querySelector('.nav-underline');
-            const toggle = document.querySelector('[data-toggle]');
+            let activeLink = document.querySelector('.nav a.active');
 
-            let activeLink = document.querySelector('[data-nav-link].active');
-
-            // Position underline function
             function positionUnderline(link) {
                 if (!underline || !link) return;
-                
                 const linkRect = link.getBoundingClientRect();
                 const navRect = nav.querySelector('ul').getBoundingClientRect();
-                
                 underline.style.opacity = '1';
-                underline.style.width = `${linkRect.width}px`;
-                underline.style.transform = `translateX(${linkRect.left - navRect.left}px)`;
+                underline.style.width = linkRect.width + 'px';
+                underline.style.transform = 'translateX(' + (linkRect.left - navRect.left) + 'px)';
             }
 
-            // Initial underline position
             if (activeLink) {
-                requestAnimationFrame(() => positionUnderline(activeLink));
+                setTimeout(() => positionUnderline(activeLink), 100);
             }
 
-            // Navigation hover effects
             navLinks.forEach(link => {
                 link.addEventListener('mouseenter', () => positionUnderline(link));
-                link.addEventListener('focus', () => positionUnderline(link));
             });
 
             nav.addEventListener('mouseleave', () => {
                 if (activeLink) positionUnderline(activeLink);
             });
-            
-            window.addEventListener('resize', () => {
-                if (activeLink) positionUnderline(activeLink);
-            });
+        }
 
-            // Mobile menu toggle
-            if (toggle && header) {
-                toggle.addEventListener('click', () => {
-                    const isOpen = header.classList.toggle('open');
-                    toggle.setAttribute('aria-expanded', isOpen);
+        // Carousel functionality
+        const carousel = document.querySelector('[data-carousel]');
+        const panels = Array.from(document.querySelectorAll('.panel'));
+        const isMobile = window.innerWidth <= 900;
+        
+        // Filter out "Coming Soon" panel on mobile
+        const activePanels = isMobile ? panels.filter(p => p.dataset.demo !== 'scroll') : panels;
+        let currentIndex = 0;
+        let carouselInterval;
+
+        function updateCarousel() {
+            if (isMobile) {
+                // Mobile: only show active panel
+                activePanels.forEach((panel, index) => {
+                    panel.classList.remove('active', 'left', 'right');
+                    if (index === currentIndex) {
+                        panel.classList.add('active');
+                    }
                 });
-            }
-
-            // Carousel functionality
-            const carousel = document.querySelector('[data-carousel]');
-            const panels = document.querySelectorAll('.panel');
-            let currentIndex = 0;
-            let carouselInterval;
-            const isMobile = window.innerWidth <= 900;
-
-            function updateCarousel() {
+            } else {
+                // Desktop: show active, left, and right
                 panels.forEach((panel, index) => {
                     panel.classList.remove('active', 'left', 'right');
                     
                     if (index === currentIndex) {
                         panel.classList.add('active');
-                    } else if (!isMobile) {
-                        // Only show side panels on desktop
-                        if (index === (currentIndex - 1 + panels.length) % panels.length) {
-                            panel.classList.add('left');
-                        } else if (index === (currentIndex + 1) % panels.length) {
-                            panel.classList.add('right');
-                        }
+                    } else if (index === (currentIndex - 1 + panels.length) % panels.length) {
+                        panel.classList.add('left');
+                    } else if (index === (currentIndex + 1) % panels.length) {
+                        panel.classList.add('right');
                     }
                 });
             }
+        }
 
-            function nextPanel() {
-                currentIndex = (currentIndex + 1) % panels.length;
-                updateCarousel();
-            }
-
-            function startCarousel() {
-                carouselInterval = setInterval(nextPanel, 4000);
-            }
-
-            function stopCarousel() {
-                if (carouselInterval) {
-                    clearInterval(carouselInterval);
-                    carouselInterval = null;
-                }
-            }
-
-            // Start carousel
+        function nextPanel() {
+            currentIndex = (currentIndex + 1) % activePanels.length;
             updateCarousel();
-            startCarousel();
+        }
 
-            // Pause carousel on hover
-            if (carousel) {
-                carousel.addEventListener('mouseenter', stopCarousel);
-                carousel.addEventListener('mouseleave', startCarousel);
+        function startCarousel() {
+            carouselInterval = setInterval(nextPanel, 4000);
+        }
+
+        function stopCarousel() {
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+                carouselInterval = null;
             }
+        }
 
-            // Update on resize
-            window.addEventListener('resize', () => {
-                const wasMobile = isMobile;
-                const nowMobile = window.innerWidth <= 900;
-                if (wasMobile !== nowMobile) {
-                    updateCarousel();
+        updateCarousel();
+        startCarousel();
+
+        if (carousel) {
+            carousel.addEventListener('mouseenter', stopCarousel);
+            carousel.addEventListener('mouseleave', startCarousel);
+        }
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
                 }
-            });
-
-            // Demo animations
-            function animateNavDemo(container) {
-                const navItems = container.querySelectorAll('.demo-nav li');
-                const underline = container.querySelector('.demo-underline');
-                let currentItem = 0;
-
-                function updateNavDemo() {
-                    // Reset all items
-                    navItems.forEach(item => item.classList.remove('active'));
-                    
-                    // Set active item
-                    const activeItem = navItems[currentItem];
-                    activeItem.classList.add('active');
-
-                    // Calculate underline position relative to the nav container
-                    const navUl = container.querySelector('.demo-nav ul');
-                    let leftOffset = 0;
-                    
-                    // Calculate left offset by summing widths of previous items
-                    for (let i = 0; i < currentItem; i++) {
-                        leftOffset += navItems[i].offsetWidth + 18; // 18px is the gap
-                    }
-
-                    // Set underline position and width
-                    underline.style.width = `${activeItem.offsetWidth}px`;
-                    underline.style.left = `${leftOffset}px`;
-
-                    currentItem = (currentItem + 1) % navItems.length;
-                }
-
-                // Initial setup
-                updateNavDemo();
-                return setInterval(updateNavDemo, 2000);
-            }
-
-            function animateBurgerDemo(container) {
-                const hamburger = container.querySelector('.hamburger');
-                const sidePanel = container.querySelector('.side-panel');
-                const navItems = container.querySelectorAll('.side-nav li');
-                let currentItem = 0;
-                let isOpen = false;
-
-                function toggleMenu() {
-                    isOpen = !isOpen;
-                    hamburger.classList.toggle('active', isOpen);
-                    sidePanel.classList.toggle('active', isOpen);
-
-                    if (isOpen) {
-                        // Reset current item
-                        currentItem = 0;
-                        
-                        // Animate through nav items
-                        const itemInterval = setInterval(() => {
-                            navItems.forEach(item => item.classList.remove('active'));
-                            if (navItems[currentItem]) {
-                                navItems[currentItem].classList.add('active');
-                            }
-                            currentItem = (currentItem + 1) % navItems.length;
-                        }, 800);
-
-                        // Close menu after cycling through items
-                        setTimeout(() => {
-                            clearInterval(itemInterval);
-                            // Reset all items before closing
-                            navItems.forEach(item => item.classList.remove('active'));
-                            navItems[0].classList.add('active'); // Set first item as active
-                            toggleMenu();
-                        }, 3200); // Show each item for 800ms * 4 items
-                    } else {
-                        // Reset to first item when closed
-                        navItems.forEach(item => item.classList.remove('active'));
-                        navItems[0].classList.add('active');
-                    }
-                }
-
-                // Initialize first item as active
-                navItems[0].classList.add('active');
-                
-                // Start the cycle
-                toggleMenu();
-                return setInterval(() => {
-                    if (!isOpen) {
-                        toggleMenu();
-                    }
-                }, 6000);
-            }
-
-            // Start demo animations for carousel
-            const demoIntervals = [];
-
-            panels.forEach(panel => {
-                const demoType = panel.dataset.demo;
-                if (demoType === 'nav') {
-                    demoIntervals.push(animateNavDemo(panel));
-                } else if (demoType === 'burger') {
-                    demoIntervals.push(animateBurgerDemo(panel));
-                }
-            });
-
-            // Also animate plan demos with corrected selectors
-            document.querySelectorAll('[data-plan-demo="nav"]').forEach(planNav => {
-                demoIntervals.push(animateNavDemo(planNav.closest('.demo-content')));
-            });
-
-            document.querySelectorAll('[data-plan-demo="burger"]').forEach(planBurger => {
-                demoIntervals.push(animateBurgerDemo(planBurger));
-            });
-
-            // Smooth scroll for all internal links
-            document.querySelectorAll('a[href^="#"]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    const targetSection = document.querySelector(targetId);
-                    if (targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
             });
         });
     </script>
