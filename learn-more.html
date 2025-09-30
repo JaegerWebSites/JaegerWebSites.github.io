@@ -258,7 +258,7 @@
         .demo-content video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
 
         .soon {
@@ -560,9 +560,7 @@
             }
 
             /* Hide the "Coming Soon" panel on mobile */
-            .panel[data-demo="scroll"] {
-                display: none;
-            }
+            /* Removed - now showing all panels on mobile */
 
             :root {
                 --panel-w: clamp(300px, 85vw, 600px);
@@ -839,8 +837,8 @@
         const panels = Array.from(document.querySelectorAll('.panel'));
         const isMobile = window.innerWidth <= 900;
         
-        // Filter out "Coming Soon" panel on mobile
-        const activePanels = isMobile ? panels.filter(p => p.dataset.demo !== 'scroll') : panels;
+        // Show all panels on both mobile and desktop
+        const activePanels = panels;
         let currentIndex = 0;
         let carouselInterval;
 
